@@ -1,0 +1,17 @@
+# VSCODE
+.vscode
+
+# DEPENDENCIES
+node_modules
+
+# LOGGING
+
+*.log
+logs
+
+# OS
+.DS_*
+
+# BUILD
+
+dist
