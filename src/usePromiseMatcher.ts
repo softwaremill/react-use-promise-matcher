@@ -8,9 +8,10 @@ import {
     UsePromise,
     UsePromiseWithArguments,
     PromiseLoaderWithArguments,
+    UsePromiseConfig,
 } from "./types";
 
-export const usePromise = <T, E = string>(loaderFn: PromiseLoader<T>, auto = false): UsePromise<T, E> => {
+export const usePromise = <T, E = string>(loaderFn: PromiseLoader<T>, config?: UsePromiseConfig): UsePromise<T, E> => {
     const [result, setResult] = useState<PromiseResultShape<T, E>>(new PromiseLoading<T, E>());
 
     const load = async (): Promise<void> => {
@@ -24,10 +25,10 @@ export const usePromise = <T, E = string>(loaderFn: PromiseLoader<T>, auto = fal
     };
 
     useEffect(() => {
-        if (auto) {
+        if (config?.autoLoad) {
             load();
         }
-    }, [auto]);
+    }, [config?.autoLoad]);
 
     return {
         load,

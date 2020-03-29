@@ -26,3 +26,7 @@ export interface UsePromiseWithArguments<T, P extends object, E = string> {
     load: PromiseLoaderWithArguments<void, P>;
     result: PromiseResultShape<T, E>;
 }
+
+export interface UsePromiseConfig {
+    autoLoad: boolean;
+}
