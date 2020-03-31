@@ -19,6 +19,7 @@ interface TestComponentWithArguments {
     loader: (params: Params) => Promise<TestData>;
 }
 
+const IDLE_MESSAGE = "Waiting for call";
 const LOADING_MESSAGE = "Loading";
 const ERROR_MESSAGE = "Promise was rejected";
 const SAMPLE_TEXT = "Some asynchronously loaded text";
@@ -31,6 +32,7 @@ const TestComponent: React.FC<TestComponent> = ({ loader }: TestComponent) => {
     return (
         <div data-testid={containerId}>
             {result.match({
+                Idle: () => IDLE_MESSAGE,
                 Loading: () => LOADING_MESSAGE,
                 Rejected: (err) => err,
                 Resolved: (res) => res.data,
@@ -46,6 +48,7 @@ const TestComponentWithAutoLoad: React.FC<TestComponent> = ({ loader }: TestComp
     return (
         <div data-testid={containerId}>
             {result.match({
+                Idle: () => IDLE_MESSAGE,
                 Loading: () => LOADING_MESSAGE,
                 Rejected: (err) => err,
                 Resolved: (res) => res.data,
@@ -63,6 +66,7 @@ const TestComponentWithArguments: React.FC<TestComponentWithArguments> = ({ load
     return (
         <div data-testid={containerId}>
             {result.match({
+                Idle: () => IDLE_MESSAGE,
                 Loading: () => LOADING_MESSAGE,
                 Rejected: (err) => err,
                 Resolved: (res) => res.data,
@@ -81,9 +85,9 @@ describe("usePromise", () => {
         loadFailingPromise.mockClear();
     });
 
-    it("Loading message should be rendered by default if the promise loader function hasn't been called yet", () => {
+    it("Idle message should be rendered if the promise loader function hasn't been called yet", () => {
         expect(render(<TestComponent loader={loadSomePromise} />).getByTestId(containerId)).toHaveTextContent(
-            LOADING_MESSAGE,
+            IDLE_MESSAGE,
         );
         expect(loadSomePromise).toHaveBeenCalledTimes(0);
     });
@@ -144,10 +148,10 @@ describe("usePromiseWithArguments", () => {
         loadFailingPromise.mockClear();
     });
 
-    it("Loading message should be rendered by default if the promise loader function hasn't been called yet", () => {
+    it("Idle message should be rendered if the promise loader function hasn't been called yet", () => {
         expect(
             render(<TestComponentWithArguments loader={loadSomePromise} />).getByTestId(containerId),
-        ).toHaveTextContent(LOADING_MESSAGE);
+        ).toHaveTextContent(IDLE_MESSAGE);
         expect(loadSomePromise).toHaveBeenCalledTimes(0);
     });
 

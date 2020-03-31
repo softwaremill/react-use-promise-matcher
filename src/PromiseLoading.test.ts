@@ -5,13 +5,15 @@ describe("PromiseLoading", () => {
     const LOADING_TEXT = "Loading...";
 
     const matcher: PromiseMatcher<unknown, unknown, string> = {
+        Idle: () => "idle",
         Loading: () => LOADING_TEXT,
         Rejected: () => "rejected",
         Resolved: (_) => "resolved",
     };
 
     it("isLoading on PromiseLoading should be true", () => {
-        const { isLoading, isRejected, isResolved } = new PromiseLoading();
+        const { isIdle, isLoading, isRejected, isResolved } = new PromiseLoading();
+        expect(isIdle).toBe(false);
         expect(isLoading).toBe(true);
         expect(isRejected).toBe(false);
         expect(isResolved).toBe(false);

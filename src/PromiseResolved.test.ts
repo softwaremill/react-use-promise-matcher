@@ -12,13 +12,15 @@ describe("PromiseResolved", () => {
     };
 
     const matcher: PromiseMatcher<TestInterface, unknown, string> = {
+        Idle: () => "idle",
         Loading: () => "loading",
         Rejected: () => "rejected",
         Resolved: (obj) => obj.value,
     };
 
     it("isResolved on PromiseResolved should be true", () => {
-        const { isLoading, isRejected, isResolved } = new PromiseResolved(RESOLVED_OBJECT);
+        const { isIdle, isLoading, isRejected, isResolved } = new PromiseResolved(RESOLVED_OBJECT);
+        expect(isIdle).toBe(false);
         expect(isLoading).toBe(false);
         expect(isRejected).toBe(false);
         expect(isResolved).toBe(true);

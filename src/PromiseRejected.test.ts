@@ -6,13 +6,15 @@ describe("PromiseRejected", () => {
     const REJECTED = "rejected";
 
     const matcher: PromiseMatcher<unknown, Error, string> = {
+        Idle: () => "idle",
         Loading: () => "loading",
         Rejected: () => REJECTED,
         Resolved: (_) => "resolved",
     };
 
     it("isRejected on PromiseRejected should be true", () => {
-        const { isLoading, isRejected, isResolved } = new PromiseRejected(REJECTION_REASON);
+        const { isIdle, isLoading, isRejected, isResolved } = new PromiseRejected(REJECTION_REASON);
+        expect(isIdle).toBe(false);
         expect(isLoading).toBe(false);
         expect(isRejected).toBe(true);
         expect(isResolved).toBe(false);

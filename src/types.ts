@@ -2,6 +2,7 @@ export interface PromiseMatcher<T, E, U> {
     Resolved: (value: T) => U;
     Rejected: (reason: E) => U;
     Loading: () => U;
+    Idle: () => U;
 }
 
 export interface PromiseResultShape<T, E> {
@@ -10,6 +11,7 @@ export interface PromiseResultShape<T, E> {
     mapErr: <U>(fn: (err: E) => U) => PromiseResultShape<T, U>;
     get: () => T;
     getOr: (orValue: T) => T;
+    isIdle: boolean;
     isLoading: boolean;
     isResolved: boolean;
     isRejected: boolean;

@@ -1,6 +1,7 @@
 import { PromiseMatcher, PromiseResultShape } from "./types";
 
 export class PromiseResolved<T, E> implements PromiseResultShape<T, E> {
+    public isIdle = false;
     public isLoading = false;
     public isResolved = true;
     public isRejected = false;
