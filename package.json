@@ -1,7 +1,7 @@
 {
     "name": "react-use-promise-matcher",
-    "version": "0.0.0",
-    "description": "",
+    "version": "0.1.0",
+    "description": "React hooks library for handling promise states in a functional way",
     "main": "dist/index.js",
     "scripts": {
         "build": "webpack --mode=production",
