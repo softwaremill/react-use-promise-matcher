@@ -7,6 +7,7 @@ export {
     PromiseMatcher,
     UsePromise,
     UsePromiseWithArguments,
+    PromiseResultShape,
     PromiseLoader,
     PromiseLoaderWithArguments,
 } from "./types";
