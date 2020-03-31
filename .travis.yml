@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - 7
+install: 
+	- yarn install --frozen-lockfile
+script:
+	- yarn build
+	- yarn test-ci
+
