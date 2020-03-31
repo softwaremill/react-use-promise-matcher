@@ -6,7 +6,7 @@ export class PromiseIdle<T, E> implements PromiseResultShape<T, E> {
     public isResolved = false;
     public isRejected = false;
 
-    public match = <U>(matcher: PromiseMatcher<T, E, U>): U => matcher.Idle();
+    public match = <U>(matcher: PromiseMatcher<T, E, U>): U => (matcher.Idle ? matcher.Idle() : matcher.Loading());
 
     public map = <U>(): PromiseResultShape<U, E> => new PromiseIdle<U, E>();
 

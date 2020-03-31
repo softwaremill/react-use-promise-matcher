@@ -2,7 +2,7 @@ export interface PromiseMatcher<T, E, U> {
     Resolved: (value: T) => U;
     Rejected: (reason: E) => U;
     Loading: () => U;
-    Idle: () => U;
+    Idle?: () => U;
 }
 
 export interface PromiseResultShape<T, E> {

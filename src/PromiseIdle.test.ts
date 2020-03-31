@@ -3,12 +3,17 @@ import { PromiseIdle } from "./PromiseIdle";
 
 describe("PromiseIdle", () => {
     const IDLE_TEXT = "Idle";
+    const LOADING_TEXT = "Loading...";
 
-    const matcher: PromiseMatcher<unknown, unknown, string> = {
-        Idle: () => IDLE_TEXT,
-        Loading: () => "idle",
+    const matcherNoIdle: PromiseMatcher<unknown, unknown, string> = {
+        Loading: () => LOADING_TEXT,
         Rejected: () => "rejected",
         Resolved: (_) => "resolved",
+    };
+
+    const matcher: PromiseMatcher<unknown, unknown, string> = {
+        ...matcherNoIdle,
+        Idle: () => IDLE_TEXT,
     };
 
     it("isIdle on PromiseIdle should be true", () => {
@@ -21,6 +26,9 @@ describe("PromiseIdle", () => {
 
     it("calling match on PromiseIdle with provided matcher should return 'Idle' text", () =>
         expect(new PromiseIdle().match(matcher)).toBe(IDLE_TEXT));
+
+    it("calling match on PromiseIdle without Idle matcher should return 'Loading...' text", () =>
+        expect(new PromiseIdle().match(matcherNoIdle)).toBe(LOADING_TEXT));
 
     it("calling map on PromiseIdle with provided mapper should return new PromiseIdle instance", () => {
         const original: PromiseResultShape<number, Error> = new PromiseIdle<number, Error>();
