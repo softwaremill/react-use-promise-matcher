@@ -29,7 +29,7 @@ export const usePromise = <T, E = string>(loaderFn: PromiseLoader<T>, config?: U
         if (config?.autoLoad) {
             load();
         }
-    }, [config?.autoLoad]);
+    }, []);
 
     return {
         load,
