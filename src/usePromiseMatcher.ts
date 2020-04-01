@@ -37,7 +37,7 @@ export const usePromise = <T, E = string>(loaderFn: PromiseLoader<T>, config?: U
     };
 };
 
-export const usePromiseWithArguments = <T extends object, P extends object, E = string>(
+export const usePromiseWithArguments = <T, P, E = string>(
     loaderFn: PromiseLoaderWithArguments<T, P>,
 ): UsePromiseWithArguments<T, P, E> => {
     const [result, setResult] = useState<PromiseResultShape<T, E>>(new PromiseIdle<T, E>());
