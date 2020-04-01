@@ -2,6 +2,11 @@
     "name": "react-use-promise-matcher",
     "version": "0.2.0",
     "description": "React hooks library for handling promise states in a functional way",
+    "homepage": "https://github.com/softwaremill/react-use-promise-matcher",
+    "bugs": {
+        "url": "https://github.com/softwaremill/react-use-promise-matcher/issues",
+        "email": "frontend-dev@softwaremill.com"
+    },
     "main": "dist/index.js",
     "scripts": {
         "build": "webpack --mode=production",
@@ -9,7 +14,15 @@
         "test-ci": "jest --ci",
         "test": "jest --debug --watch"
     },
-    "author": "Piotr Majcher",
+    "author": {
+        "name": "Piotr Majcher",
+        "email": "majcherpiotr.dev@gmail.com",
+        "url": "https://github.com/majcherpiotrek"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/softwaremill/react-use-promise-matcher.git"
+    },
     "license": "MIT",
     "devDependencies": {
         "@testing-library/jest-dom": "^5.3.0",
