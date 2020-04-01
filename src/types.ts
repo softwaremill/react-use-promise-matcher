@@ -21,12 +21,14 @@ export type PromiseLoader<T> = () => Promise<T>;
 export interface UsePromise<T, E = string> {
     load: PromiseLoader<void>;
     result: PromiseResultShape<T, E>;
+    clear: () => void;
 }
 
 export type PromiseLoaderWithArguments<T, P> = (params: P) => Promise<T>;
 export interface UsePromiseWithArguments<T, P, E = string> {
     load: PromiseLoaderWithArguments<void, P>;
     result: PromiseResultShape<T, E>;
+    clear: () => void;
 }
 
 export interface UsePromiseConfig {

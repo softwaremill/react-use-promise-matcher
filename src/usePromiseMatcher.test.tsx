@@ -26,9 +26,11 @@ const SAMPLE_TEXT = "Some asynchronously loaded text";
 
 const testData: TestData = { data: SAMPLE_TEXT };
 const containerId = "container";
+const loadButtonId = "loadButton";
+const clearButtonId = "clearButton";
 
 const TestComponent: React.FC<TestComponent> = ({ loader }: TestComponent) => {
-    const { load, result } = usePromise<TestData>(loader);
+    const { load, result, clear } = usePromise<TestData>(loader);
     return (
         <div data-testid={containerId}>
             {result.match({
@@ -37,13 +39,18 @@ const TestComponent: React.FC<TestComponent> = ({ loader }: TestComponent) => {
                 Rejected: (err) => err,
                 Resolved: (res) => res.data,
             })}
-            <button onClick={load}>Load</button>
+            <button data-testid={loadButtonId} onClick={load}>
+                Load
+            </button>
+            <button data-testid={clearButtonId} onClick={clear}>
+                Clear
+            </button>
         </div>
     );
 };
 
 const TestComponentWithAutoLoad: React.FC<TestComponent> = ({ loader }: TestComponent) => {
-    const { load, result } = usePromise<TestData>(loader, { autoLoad: true });
+    const { load, result, clear } = usePromise<TestData>(loader, { autoLoad: true });
 
     return (
         <div data-testid={containerId}>
@@ -53,13 +60,18 @@ const TestComponentWithAutoLoad: React.FC<TestComponent> = ({ loader }: TestComp
                 Rejected: (err) => err,
                 Resolved: (res) => res.data,
             })}
-            <button onClick={load}>Load</button>
+            <button data-testid={loadButtonId} onClick={load}>
+                Load
+            </button>
+            <button data-testid={clearButtonId} onClick={clear}>
+                Clear
+            </button>
         </div>
     );
 };
 
 const TestComponentWithArguments: React.FC<TestComponentWithArguments> = ({ loader }: TestComponentWithArguments) => {
-    const { load, result } = usePromiseWithArguments<TestData, Params>(loader);
+    const { load, result, clear } = usePromiseWithArguments<TestData, Params>(loader);
 
     const onClick = () => load({ param: SAMPLE_TEXT });
 
@@ -71,7 +83,12 @@ const TestComponentWithArguments: React.FC<TestComponentWithArguments> = ({ load
                 Rejected: (err) => err,
                 Resolved: (res) => res.data,
             })}
-            <button onClick={onClick}>Load</button>
+            <button data-testid={loadButtonId} onClick={onClick}>
+                Load
+            </button>
+            <button data-testid={clearButtonId} onClick={clear}>
+                Clear
+            </button>
         </div>
     );
 };
@@ -93,9 +110,9 @@ describe("usePromise", () => {
     });
 
     it("Text from testData object should be rendered after the load button was clicked and promise has been resolved", async () => {
-        const { getByTestId, getByRole } = render(<TestComponent loader={loadSomePromise} />);
+        const { getByTestId } = render(<TestComponent loader={loadSomePromise} />);
 
-        fireEvent.click(getByRole("button"));
+        fireEvent.click(getByTestId(loadButtonId));
         expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
         expect(loadSomePromise).toHaveBeenCalledTimes(1);
         /* 
@@ -122,9 +139,9 @@ describe("usePromise", () => {
     });
 
     it("Error message should be rendered after the promise has been rejected", async () => {
-        const { getByTestId, getByRole } = render(<TestComponent loader={loadFailingPromise} />);
+        const { getByTestId } = render(<TestComponent loader={loadFailingPromise} />);
 
-        fireEvent.click(getByRole("button"));
+        fireEvent.click(getByTestId(loadButtonId));
         expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
         expect(loadFailingPromise).toHaveBeenCalledTimes(1);
         /* 
@@ -134,6 +151,25 @@ describe("usePromise", () => {
         */
         const element = await waitForElement(() => getByTestId(containerId));
         expect(element).toHaveTextContent(ERROR_MESSAGE);
+    });
+
+    it("Idle message should be rendered after the clear function was called", async () => {
+        const { getByTestId } = render(<TestComponent loader={loadSomePromise} />);
+
+        fireEvent.click(getByTestId(loadButtonId));
+        expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
+        /* 
+            TODO replace 'waitForElement' with 'waitFor' and update dependencies when following PRs are merged:
+            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43108
+            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43102  
+        */
+        let element = await waitForElement(() => getByTestId(containerId));
+        expect(element).toHaveTextContent(SAMPLE_TEXT);
+
+        fireEvent.click(getByTestId(clearButtonId));
+        element = await waitForElement(() => getByTestId(containerId));
+
+        expect(element).toHaveTextContent(IDLE_MESSAGE);
     });
 });
 
@@ -156,9 +192,9 @@ describe("usePromiseWithArguments", () => {
     });
 
     it("Text from testData object should be rendered after the load button was clicked and promise has been resolved", async () => {
-        const { getByTestId, getByRole } = render(<TestComponentWithArguments loader={loadSomePromise} />);
+        const { getByTestId } = render(<TestComponentWithArguments loader={loadSomePromise} />);
 
-        fireEvent.click(getByRole("button"));
+        fireEvent.click(getByTestId(loadButtonId));
         expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
         expect(loadSomePromise).toHaveBeenCalledTimes(1);
         /* 
@@ -171,9 +207,9 @@ describe("usePromiseWithArguments", () => {
     });
 
     it("Error message should be rendered after the promise has been rejected", async () => {
-        const { getByTestId, getByRole } = render(<TestComponentWithArguments loader={loadFailingPromise} />);
+        const { getByTestId } = render(<TestComponentWithArguments loader={loadFailingPromise} />);
 
-        fireEvent.click(getByRole("button"));
+        fireEvent.click(getByTestId(loadButtonId));
         expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
         expect(loadFailingPromise).toHaveBeenCalledTimes(1);
         /* 
@@ -183,5 +219,24 @@ describe("usePromiseWithArguments", () => {
         */
         const element = await waitForElement(() => getByTestId(containerId));
         expect(element).toHaveTextContent(ERROR_MESSAGE);
+    });
+
+    it("Idle message should be rendered after the clear function was called", async () => {
+        const { getByTestId } = render(<TestComponentWithArguments loader={loadSomePromise} />);
+
+        fireEvent.click(getByTestId(loadButtonId));
+        expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
+        /* 
+            TODO replace 'waitForElement' with 'waitFor' and update dependencies when following PRs are merged:
+            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43108
+            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43102  
+        */
+        let element = await waitForElement(() => getByTestId(containerId));
+        expect(element).toHaveTextContent(SAMPLE_TEXT);
+
+        fireEvent.click(getByTestId(clearButtonId));
+        element = await waitForElement(() => getByTestId(containerId));
+
+        expect(element).toHaveTextContent(IDLE_MESSAGE);
     });
 });

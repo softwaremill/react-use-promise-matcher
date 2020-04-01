@@ -25,6 +25,8 @@ export const usePromise = <T, E = string>(loaderFn: PromiseLoader<T>, config?: U
         }
     };
 
+    const clear = () => setResult(new PromiseIdle<T, E>());
+
     useEffect(() => {
         if (config?.autoLoad) {
             load();
@@ -34,6 +36,7 @@ export const usePromise = <T, E = string>(loaderFn: PromiseLoader<T>, config?: U
     return {
         load,
         result,
+        clear,
     };
 };
 
@@ -52,8 +55,11 @@ export const usePromiseWithArguments = <T, P, E = string>(
         }
     };
 
+    const clear = () => setResult(new PromiseIdle<T, E>());
+
     return {
         load,
         result,
+        clear,
     };
 };
