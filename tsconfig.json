@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "./dist/",
+        "outDir": "./dist",
         "noImplicitAny": true,
         "module": "es6",
         "target": "es5",
@@ -10,7 +10,9 @@
         "strict": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "skipLibCheck": true,
         "lib": ["DOM", "ES5", "ES2015", "ES2015.Promise"]
     },
-    "exclude": ["node_modules", "dist"]
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist", "src/**/*.test.tsx", "src/**/*.test.ts"]
 }

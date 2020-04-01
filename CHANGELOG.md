@@ -1,3 +1,7 @@
+[unreleased]
+
+-   Project configuration updates - migrated from webpack to rollup
+
 [0.2.0]
 
 -   Fixed bug with hook entering a re-render loop when config was passed to usePromise
