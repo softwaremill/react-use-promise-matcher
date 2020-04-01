@@ -9,6 +9,7 @@
     },
     "main": "dist/index.js",
     "scripts": {
+        "clean": "rimraf dist",
         "build": "webpack --mode=production",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "test-ci": "jest --ci",
@@ -47,6 +48,7 @@
         "prettier": "^2.0.1",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
+        "rimraf": "^3.0.2",
         "ts-jest": "^25.2.1",
         "ts-loader": "^6.2.1",
         "typescript": "^3.8.3",
