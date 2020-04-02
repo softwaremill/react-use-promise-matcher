@@ -1,3 +1,8 @@
+[0.2.2]
+
+-   Simplified rollup config
+-   Updated rollup config - removed building umd module
+
 [0.2.1]
 
 -   Project configuration updates - migrated from webpack to rollup

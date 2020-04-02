@@ -1,15 +1,15 @@
 {
     "name": "react-use-promise-matcher",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "React hooks library for handling promise states in a functional way",
     "homepage": "https://github.com/softwaremill/react-use-promise-matcher",
     "bugs": {
         "url": "https://github.com/softwaremill/react-use-promise-matcher/issues",
         "email": "frontend-dev@softwaremill.com"
     },
-    "main": "dist/react-use-promise-matcher.js",
-    "module": "dist/react-use-promise-matcher.js",
-    "types": "dist/src/react-use-promise-matcher.d.ts",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
     "scripts": {
         "clean": "rimraf dist",
         "build": "rollup -c && tsc",
@@ -52,10 +52,6 @@
         "react-dom": "^16.13.1",
         "rimraf": "^3.0.2",
         "rollup": "^2.3.2",
-        "rollup-plugin-json": "^4.0.0",
-        "rollup-plugin-node-resolve": "^5.2.0",
-        "rollup-plugin-sourcemaps": "^0.5.0",
-        "rollup-plugin-terser": "^5.3.0",
         "rollup-plugin-typescript2": "^0.27.0",
         "ts-jest": "^25.2.1",
         "ts-loader": "^6.2.1",
