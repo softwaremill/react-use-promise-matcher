@@ -7,8 +7,8 @@
         "url": "https://github.com/softwaremill/react-use-promise-matcher/issues",
         "email": "frontend-dev@softwaremill.com"
     },
-    "main": "dist/react-use-promise-matcher.umd.js",
-    "module": "dist/react-use-promise-matcher.esm.js",
+    "main": "dist/react-use-promise-matcher.js",
+    "module": "dist/react-use-promise-matcher.js",
     "types": "dist/src/react-use-promise-matcher.d.ts",
     "scripts": {
         "clean": "rimraf dist",
@@ -47,7 +47,6 @@
         "eslint-plugin-prettier": "^3.1.2",
         "eslint-plugin-react": "^7.19.0",
         "jest": "^25.2.3",
-        "lodash.camelcase": "^4.3.0",
         "prettier": "^2.0.1",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
@@ -68,6 +67,7 @@
         "react": "^16.13.1"
     },
     "files": [
-        "dist"
+        "dist",
+        "package.json"
     ]
 }
