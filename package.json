@@ -15,7 +15,9 @@
         "build": "rollup -c && tsc",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "test-ci": "jest --ci",
-        "test": "jest --debug --watch"
+        "test": "jest --debug --watch",
+        "test-once": "jest",
+        "commit": "git-cz"
     },
     "author": {
         "name": "Piotr Majcher",
@@ -37,6 +39,7 @@
         "@types/testing-library__react": "^10.0.0",
         "@typescript-eslint/eslint-plugin": "^2.24.0",
         "@typescript-eslint/parser": "^2.24.0",
+        "cz-conventional-changelog": "3.1.0",
         "eslint": "^6.8.0",
         "eslint-config-airbnb": "^18.1.0",
         "eslint-config-prettier": "^6.10.1",
@@ -46,6 +49,7 @@
         "eslint-plugin-jsx-a11y": "^6.2.3",
         "eslint-plugin-prettier": "^3.1.2",
         "eslint-plugin-react": "^7.19.0",
+        "husky": "^4.2.3",
         "jest": "^25.2.3",
         "prettier": "^2.0.1",
         "react": "^16.13.1",
@@ -61,6 +65,17 @@
     },
     "peerDependencies": {
         "react": "^16.13.1"
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "yarn lint",
+            "pre-push": "yarn test-once && yarn lint"
+        }
     },
     "files": [
         "dist",
