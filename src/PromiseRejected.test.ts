@@ -9,7 +9,7 @@ describe("PromiseRejected", () => {
         Idle: () => "idle",
         Loading: () => "loading",
         Rejected: () => REJECTED,
-        Resolved: (_) => "resolved",
+        Resolved: () => "resolved",
     };
 
     it("isRejected on PromiseRejected should be true", () => {

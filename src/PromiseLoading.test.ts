@@ -8,7 +8,7 @@ describe("PromiseLoading", () => {
         Idle: () => "idle",
         Loading: () => LOADING_TEXT,
         Rejected: () => "rejected",
-        Resolved: (_) => "resolved",
+        Resolved: () => "resolved",
     };
 
     it("isLoading on PromiseLoading should be true", () => {

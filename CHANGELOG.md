@@ -1,3 +1,7 @@
+[1.0.0]
+
+-   First deployable version
+
 [0.2.2]
 
 -   Simplified rollup config

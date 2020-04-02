@@ -11,6 +11,3 @@ logs
 
 # OS
 .DS_*
-
-# BUILD
-dist
