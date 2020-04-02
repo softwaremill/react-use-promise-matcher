@@ -24,6 +24,13 @@
         "email": "majcherpiotr.dev@gmail.com",
         "url": "https://github.com/majcherpiotrek"
     },
+    "contributors": [
+        {
+            "name": "Jakub Antolak",
+            "email": "poprostuantolak@gmail.com",
+            "url": "https://github.com/afternoon2"
+        }
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/softwaremill/react-use-promise-matcher.git"
