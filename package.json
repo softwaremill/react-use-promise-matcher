@@ -1,17 +1,33 @@
 {
     "name": "react-use-promise-matcher",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "React hooks library for handling promise states in a functional way",
+    "homepage": "https://github.com/softwaremill/react-use-promise-matcher",
+    "bugs": {
+        "url": "https://github.com/softwaremill/react-use-promise-matcher/issues",
+        "email": "frontend-dev@softwaremill.com"
+    },
     "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
     "scripts": {
-        "build": "webpack --mode=production",
+        "clean": "rimraf dist",
+        "build": "rollup -c && tsc",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "test-ci": "jest --ci",
         "test": "jest --debug --watch",
         "test-once": "jest",
         "commit": "git-cz"
     },
-    "author": "Piotr Majcher",
+    "author": {
+        "name": "Piotr Majcher",
+        "email": "majcherpiotr.dev@gmail.com",
+        "url": "https://github.com/majcherpiotrek"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/softwaremill/react-use-promise-matcher.git"
+    },
     "license": "MIT",
     "devDependencies": {
         "@testing-library/jest-dom": "^5.3.0",
@@ -36,17 +52,20 @@
         "husky": "^4.2.3",
         "jest": "^25.2.3",
         "prettier": "^2.0.1",
+        "react": "^16.13.1",
         "react-dom": "^16.13.1",
+        "rimraf": "^3.0.2",
+        "rollup": "^2.3.2",
+        "rollup-plugin-typescript2": "^0.27.0",
         "ts-jest": "^25.2.1",
         "ts-loader": "^6.2.1",
         "typescript": "^3.8.3",
         "webpack": "^4.42.0",
         "webpack-cli": "^3.3.11"
     },
-    "dependencies": {
+    "peerDependencies": {
         "react": "^16.13.1"
     },
-    "types": "dist/index.d.ts",
     "config": {
         "commitizen": {
             "path": "./node_modules/cz-conventional-changelog"
@@ -57,5 +76,10 @@
             "pre-commit": "yarn lint",
             "pre-push": "yarn test-once && yarn lint"
         }
-    }
+    },
+    "files": [
+        "dist",
+        "README.md",
+        "CHANGELOG.md"
+    ]
 }

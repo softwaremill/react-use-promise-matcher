@@ -8,7 +8,7 @@ describe("PromiseIdle", () => {
     const matcherNoIdle: PromiseMatcher<unknown, unknown, string> = {
         Loading: () => LOADING_TEXT,
         Rejected: () => "rejected",
-        Resolved: (_) => "resolved",
+        Resolved: () => "resolved",
     };
 
     const matcher: PromiseMatcher<unknown, unknown, string> = {

@@ -4,7 +4,6 @@ export interface PromiseMatcher<T, E, U> {
     Loading: () => U;
     Idle?: () => U;
 }
-
 export interface PromiseResultShape<T, E> {
     match: <U>(matcher: PromiseMatcher<T, E, U>) => U;
     map: <U>(fn: (value: T) => U) => PromiseResultShape<U, E>;
@@ -16,21 +15,18 @@ export interface PromiseResultShape<T, E> {
     isResolved: boolean;
     isRejected: boolean;
 }
-
-export type PromiseLoader<T> = () => Promise<T>;
+export declare type PromiseLoader<T> = () => Promise<T>;
 export interface UsePromise<T, E = string> {
     load: PromiseLoader<void>;
     result: PromiseResultShape<T, E>;
     clear: () => void;
 }
-
-export type PromiseLoaderWithArguments<T, P> = (params: P) => Promise<T>;
+export declare type PromiseLoaderWithArguments<T, P> = (params: P) => Promise<T>;
 export interface UsePromiseWithArguments<T, P, E = string> {
     load: PromiseLoaderWithArguments<void, P>;
     result: PromiseResultShape<T, E>;
     clear: () => void;
 }
-
 export interface UsePromiseConfig {
     autoLoad: boolean;
 }
