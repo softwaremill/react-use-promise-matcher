@@ -1,4 +1,4 @@
-[unreleased]
+[0.2.1]
 
 -   Project configuration updates - migrated from webpack to rollup
 
