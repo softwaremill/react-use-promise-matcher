@@ -24,23 +24,22 @@ The `PromiseResultShape` provides an API that lets you match each of the states 
 Let's assume we have a simple echo method that returns the string provided as an argument wrapped in a Promise.
 This how we would use the `usePromise` hook to render the received text based on what the method returns:
 
-```
-const echo = (text: string): Promise<string> =>
-  new Promise(resolve => setTimeout(() => resolve(text), 3000));
+```tsx
+const echo = (text: string): Promise<string> => new Promise((resolve) => setTimeout(() => resolve(text), 3000));
 
 export const EchoComponent = () => {
-  const { result, load } = usePromise<string>(() => echo("Echo!"));
+    const { result, load } = usePromise<string>(() => echo("Echo!"));
 
-  React.useEffect(() => {
-    load();
-  }, []);
+    React.useEffect(() => {
+        load();
+    }, []);
 
-  return result.match({
-    Idle: () => <></>,
-    Loading: () => <span>I say "echo!"</span>,
-    Rejected: err => <span>Ups, something went wrong! Error: {err}</span>,
-    Resolved: echoResponse => <span>Echo says "{echoResponse}"</span>
-  });
+    return result.match({
+        Idle: () => <></>,
+        Loading: () => <span>I say "echo!"</span>,
+        Rejected: (err) => <span>Ups, something went wrong! Error: {err}</span>,
+        Resolved: (echoResponse) => <span>Echo says "{echoResponse}"</span>,
+    });
 };
 ```
 
@@ -62,25 +61,25 @@ It's also worth mentioning that matching the `Idle` state is optional, if you de
 
 We can provide a second type parameter to the hook, which defines the type of error that is returned on rejection. By default it is set to string. If we are using some type of domain exceptions in our services we could use the hook as following:
 
-```
+```tsx
 const { result } = usePromise<SomeData, MyDomainException>(() => myServiceMethod(someArgument));
 ```
 
 and then we would match the `Rejected` state like that:
 
-```
+```typescript
 result.match({
-	...
-	Rejected: (err: MyDomainException) => err.someCustomField,
-	...
-})
+    //...
+    Rejected: (err: MyDomainException) => err.someCustomField,
+    //...
+});
 ```
 
 #### Using the hook with an async function that receives arguments
 
 As you might have noticed, in the exapmles we passed a function that was not taking any parameters to the hook. We might want to be able to pass some arguments to it, for example if they depend on user input. In that case we need to use the `usePromiseWithArguments` hook:
 
-```
+```tsx
 export const UserEchoComponent = () => {
   const [text, setText] = React.useState("Hello!");
   const { result, load } = usePromiseWithArguments<string, string>(
