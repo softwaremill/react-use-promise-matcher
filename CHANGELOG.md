@@ -1,3 +1,7 @@
+[1.0.1]
+
+-   Deployed to npm
+
 [1.0.0]
 
 -   First production version
