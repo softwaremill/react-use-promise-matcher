@@ -1,5 +1,21 @@
 # react-use-promise-matcher
 
+## Installation
+
+#### npm
+
+```bash
+npm install react-use-promise-matcher
+```
+
+#### yarn
+
+```bash
+yarn add react-use-promise-matcher
+```
+
+## About
+
 This library provides two hooks that aim to facilitate working with asynchronous data in React. Implementing components that depend on some data fetched from an API can generate a significant amount of boilerplate code as it is a common that we need to handle the following situations:
 
 1. The data hasn't been loaded yet, so we want to display some kind of loading feedback to the user.
