@@ -1,10 +1,14 @@
+[1.0.2]
+
+-   Deploy to npm
+
 [1.0.1]
 
--   Deployed to npm
+-   [corrupted] Deployed to npm in previous removed publishment
 
 [1.0.0]
 
--   First production version
+-   [corrupted] Deployed to npm in previous removed publishment
 
 [0.2.2]
 
