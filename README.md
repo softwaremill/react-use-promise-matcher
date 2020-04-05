@@ -16,7 +16,7 @@ yarn add react-use-promise-matcher
 
 ## About
 
-This library provides two hooks that aim to facilitate working with asynchronous data in React. Implementing components that depend on some data fetched from an API can generate a significant amount of boilerplate code as it is a common that we need to handle the following situations:
+This library provides two hooks that aim to facilitate working with asynchronous data in React. Implementing components that depend on some data fetched from an API can generate a significant amount of boilerplate code as it is a common practice to handle the following situations:
 
 1. The data hasn't been loaded yet, so we want to display some kind of loading feedback to the user.
 2. Request failed with an error and we should handle this situation somehow.
@@ -38,7 +38,7 @@ The `PromiseResultShape` provides an API that lets you match each of the states 
 #### Basic usage
 
 Let's assume we have a simple echo method that returns the string provided as an argument wrapped in a Promise.
-This how we would use the `usePromise` hook to render the received text based on what the method returns:
+This is how we would use the `usePromise` hook to render the received text based on what the method returns:
 
 ```tsx
 const echo = (text: string): Promise<string> => new Promise((resolve) => setTimeout(() => resolve(text), 3000));
@@ -53,15 +53,15 @@ export const EchoComponent = () => {
     return result.match({
         Idle: () => <></>,
         Loading: () => <span>I say "echo!"</span>,
-        Rejected: (err) => <span>Ups, something went wrong! Error: {err}</span>,
+        Rejected: (err) => <span>Oops, something went wrong! Error: {err}</span>,
         Resolved: (echoResponse) => <span>Echo says "{echoResponse}"</span>,
     });
 };
 ```
 
-The hook accepts a function that returns a `Promise`, as simple as that. The type parameter defines the type of data wrapped by the `Promise`. It returns a `load` function which simply calls the function provided as an argument within the hook and a `result` object that represents the result of the asynchronous operation and let's us match its states.
+The hook accepts a function that returns a `Promise`, as simple as that. The type parameter defines the type of data wrapped by the `Promise`. It returns a `load` function which simply calls the function provided as an argument within the hook and a `result` object that represents the result of the asynchronous operation and lets us match its states.
 
-#### Auto-resolving the promise on component mount
+#### Auto-resolving the Promise on component mount
 
 We could also skip the `load` function call in the `useEffect` hook and tell `usePromise` to automatically start resolving by passing a second argument to the hook with some configuration:
 
@@ -71,7 +71,7 @@ const { result } = usePromise<string>(() => echo("Echo!"), { autoLoad: true });
 
 The rest of the component would still look and work exactly the same.
 
-It's also worth mentioning that matching the `Idle` state is optional, if you decide to start loading the data right after the component is mounted, it makes no sense to use it, as `result` will move directly into the `Loading` state. The mapping for the `Loading` state will be taken for the `Idle` state if none is passed.
+It's also worth mentioning that matching the `Idle` state is optional - if you decide to start loading the data right after the component is mounted, it makes no sense to use it, as `result` will move directly into the `Loading` state. The mapping for the `Loading` state will be taken for the `Idle` state if none is passed.
 
 #### Error handling
 
@@ -93,7 +93,7 @@ result.match({
 
 #### Using the hook with an async function that receives arguments
 
-As you might have noticed, in the exapmles we passed a function that was not taking any parameters to the hook. We might want to be able to pass some arguments to it, for example if they depend on user input. In that case we need to use the `usePromiseWithArguments` hook:
+As you might have noticed, in the examples we passed a function that was not taking any parameters to the hook. We might want to be able to pass some arguments to it, for example if they depend on user input. In that case we need to use the `usePromiseWithArguments` hook:
 
 ```tsx
 export const UserEchoComponent = () => {
@@ -115,11 +115,11 @@ export const UserEchoComponent = () => {
       {result.match({
         Idle: () => <></>,
         Loading: () => <span>I say "{text}"!</span>,
-        Rejected: err => <span>Ups, something went wrong! Error: {err}</span>,
+        Rejected: err => <span>Oops, something went wrong! Error: {err}</span>,
         Resolved: echoResponse => <span>Echo says "{echoResponse}"</span>
       })}
     </div>
   )
 ```
 
-In this example, the parameters of the async function used depend on the user input, so we cannot pass them directly to the hook, but we need to pass them the the `load` function. The `usePromiseWithArguments` hook takes three type parameters, the first and last are the same as in `usePromise`, the second one though is the type of the argument passed to the `load` function.
+In this example, the parameters of the async function used depend on the user input, so we cannot pass them directly to the hook, but we need to pass them to the `load` function. The `usePromiseWithArguments` hook takes three type parameters (the last one is still opt-in): the first and the last correspond to those in `usePromise`, the second one though is the type of the argument passed to the `load` function.
