@@ -12,6 +12,14 @@ export default {
                 react: "React",
             },
         },
+        {
+            file: "dist/index.cjs",
+            format: "cjs",
+            sourcemap: true,
+            globals: {
+                react: "React",
+            },
+        },
     ],
     // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
     external: ["react"],
