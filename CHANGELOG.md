@@ -1,3 +1,7 @@
+[1.0.5]
+
+-   Updated documentation.
+
 [1.0.4]
 
 -   Added CommonJS output file.
