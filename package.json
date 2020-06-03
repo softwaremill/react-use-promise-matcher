@@ -7,7 +7,8 @@
         "url": "https://github.com/softwaremill/react-use-promise-matcher/issues",
         "email": "frontend-dev@softwaremill.com"
     },
-    "main": "dist/index.cjs",
+    "type": "module",
+    "main": "dist/index-commonjs.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {

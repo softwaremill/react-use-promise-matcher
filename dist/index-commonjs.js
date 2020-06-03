@@ -203,4 +203,4 @@ exports.PromiseRejected = PromiseRejected;
 exports.PromiseResolved = PromiseResolved;
 exports.usePromise = usePromise;
 exports.usePromiseWithArguments = usePromiseWithArguments;
-//# sourceMappingURL=index.cjs.map
+//# sourceMappingURL=index-commonjs.js.map
