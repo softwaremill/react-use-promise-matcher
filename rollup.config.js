@@ -5,7 +5,7 @@ export default {
     input: `src/index.ts`,
     output: [
         {
-            file: pkg.main,
+            file: pkg.module,
             format: "es",
             sourcemap: true,
             globals: {
@@ -13,7 +13,7 @@ export default {
             },
         },
         {
-            file: "dist/index.cjs",
+            file: pkg.main,
             format: "cjs",
             sourcemap: true,
             globals: {
