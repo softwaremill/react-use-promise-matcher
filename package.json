@@ -1,13 +1,14 @@
 {
     "name": "react-use-promise-matcher",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "React hooks library for handling promise states in a functional way",
     "homepage": "https://github.com/softwaremill/react-use-promise-matcher",
     "bugs": {
         "url": "https://github.com/softwaremill/react-use-promise-matcher/issues",
         "email": "frontend-dev@softwaremill.com"
     },
-    "main": "dist/index.cjs",
+    "type": "module",
+    "main": "dist/index-commonjs.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {

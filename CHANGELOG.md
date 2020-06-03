@@ -1,3 +1,7 @@
+[unreleased]
+
+-   Corrected commonjs build configuration so that tests in Jest in projects importing the library won't fail
+
 [1.0.6]
 
 -   Updated build configuration
