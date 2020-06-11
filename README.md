@@ -44,7 +44,7 @@ This is how we would use the `usePromise` hook to render the received text based
 const echo = (text: string): Promise<string> => new Promise((resolve) => setTimeout(() => resolve(text), 3000));
 
 export const EchoComponent = () => {
-    const { result, load } = usePromise<string>(() => echo("Echo!"));
+    const [result, load] = usePromise<string>(() => echo("Echo!"));
 
     React.useEffect(() => {
         load();
@@ -59,14 +59,14 @@ export const EchoComponent = () => {
 };
 ```
 
-The hook accepts a function that returns a `Promise`, as simple as that. The type parameter defines the type of data wrapped by the `Promise`. It returns a `load` function which simply calls the function provided as an argument within the hook and a `result` object that represents the result of the asynchronous operation and lets us match its states.
+The hook accepts a function that returns a `Promise`, as simple as that. The type parameter defines the type of data wrapped by the `Promise`. It returns an array with a `result` object that represents the result of the asynchronous operation and lets us match its states and a `load` function which simply calls the function provided as an argument within the hook.
 
 #### Auto-resolving the Promise on component mount
 
 We could also skip the `load` function call in the `useEffect` hook and tell `usePromise` to automatically start resolving by passing a second argument to the hook with some configuration:
 
 ```
-const { result } = usePromise<string>(() => echo("Echo!"), { autoLoad: true });
+const [result] = usePromise<string>(() => echo("Echo!"), { autoLoad: true });
 ```
 
 The rest of the component would still look and work exactly the same.
@@ -78,7 +78,7 @@ It's also worth mentioning that matching the `Idle` state is optional - if you d
 We can provide a second type parameter to the hook, which defines the type of error that is returned on rejection. By default it is set to string. If we are using some type of domain exceptions in our services we could use the hook as following:
 
 ```tsx
-const { result } = usePromise<SomeData, MyDomainException>(() => myServiceMethod(someArgument));
+const [result] = usePromise<SomeData, MyDomainException>(() => myServiceMethod(someArgument));
 ```
 
 and then we would match the `Rejected` state like that:
@@ -98,7 +98,7 @@ As you might have noticed, in the examples we passed a function that was not tak
 ```tsx
 export const UserEchoComponent = () => {
   const [text, setText] = React.useState("Hello!");
-  const { result, load } = usePromiseWithArguments<string, string>(
+  const [result, load] = usePromiseWithArguments<string, string>(
     (param: string) => echo(param)
   );
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
