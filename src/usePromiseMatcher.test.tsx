@@ -30,7 +30,7 @@ const loadButtonId = "loadButton";
 const clearButtonId = "clearButton";
 
 const TestComponent: React.FC<TestComponent> = ({ loader }: TestComponent) => {
-    const { load, result, clear } = usePromise<TestData>(loader);
+    const [result, load, clear] = usePromise<TestData>(loader);
     return (
         <div data-testid={containerId}>
             {result.match({
@@ -50,7 +50,7 @@ const TestComponent: React.FC<TestComponent> = ({ loader }: TestComponent) => {
 };
 
 const TestComponentWithAutoLoad: React.FC<TestComponent> = ({ loader }: TestComponent) => {
-    const { load, result, clear } = usePromise<TestData>(loader, { autoLoad: true });
+    const [result, load, clear] = usePromise<TestData>(loader, { autoLoad: true });
 
     return (
         <div data-testid={containerId}>
@@ -71,7 +71,7 @@ const TestComponentWithAutoLoad: React.FC<TestComponent> = ({ loader }: TestComp
 };
 
 const TestComponentWithArguments: React.FC<TestComponentWithArguments> = ({ loader }: TestComponentWithArguments) => {
-    const { load, result, clear } = usePromiseWithArguments<TestData, Params>(loader);
+    const [result, load, clear] = usePromiseWithArguments<TestData, Params>(loader);
 
     const onClick = () => load({ param: SAMPLE_TEXT });
 

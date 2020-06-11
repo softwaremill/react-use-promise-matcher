@@ -1,3 +1,7 @@
+[unreleased]
+
+-   Changed the return value of the hooks from object to array.
+
 [1.0.8]
 
 -   Wrapped loading functions in useCallback
