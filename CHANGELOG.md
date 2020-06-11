@@ -1,3 +1,7 @@
+[unreleased]
+
+-   Wrapped loading functions in useCallback
+
 [1.0.7]
 
 -   Corrected commonjs build configuration so that tests in Jest in projects importing the library won't fail

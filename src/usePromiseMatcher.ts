@@ -15,7 +15,7 @@ import { PromiseIdle } from "./PromiseIdle";
 export const usePromise = <T, E = string>(loaderFn: PromiseLoader<T>, config?: UsePromiseConfig): UsePromise<T, E> => {
     const [result, setResult] = React.useState<PromiseResultShape<T, E>>(new PromiseIdle<T, E>());
 
-    const load = async (): Promise<void> => {
+    const load = React.useCallback(async (): Promise<void> => {
         setResult(new PromiseLoading<T, E>());
         try {
             const data: T = await loaderFn();
@@ -23,7 +23,7 @@ export const usePromise = <T, E = string>(loaderFn: PromiseLoader<T>, config?: U
         } catch (err) {
             setResult(new PromiseRejected(err));
         }
-    };
+    }, [loaderFn]);
 
     const clear = () => setResult(new PromiseIdle<T, E>());
 
@@ -31,7 +31,7 @@ export const usePromise = <T, E = string>(loaderFn: PromiseLoader<T>, config?: U
         if (config?.autoLoad) {
             load();
         }
-    }, []);
+    }, [load, config?.autoLoad]);
 
     return {
         load,
@@ -45,15 +45,18 @@ export const usePromiseWithArguments = <T, P, E = string>(
 ): UsePromiseWithArguments<T, P, E> => {
     const [result, setResult] = React.useState<PromiseResultShape<T, E>>(new PromiseIdle<T, E>());
 
-    const load = async (params: P): Promise<void> => {
-        setResult(new PromiseLoading<T, E>());
-        try {
-            const data: T = await loaderFn(params);
-            setResult(new PromiseResolved(data));
-        } catch (err) {
-            setResult(new PromiseRejected(err));
-        }
-    };
+    const load = React.useCallback(
+        async (params: P): Promise<void> => {
+            setResult(new PromiseLoading<T, E>());
+            try {
+                const data: T = await loaderFn(params);
+                setResult(new PromiseResolved(data));
+            } catch (err) {
+                setResult(new PromiseRejected(err));
+            }
+        },
+        [loaderFn],
+    );
 
     const clear = () => setResult(new PromiseIdle<T, E>());
 
