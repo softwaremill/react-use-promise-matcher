@@ -33,11 +33,7 @@ export const usePromise = <T, E = string>(loaderFn: PromiseLoader<T>, config?: U
         }
     }, [load, config?.autoLoad]);
 
-    return {
-        load,
-        result,
-        clear,
-    };
+    return [result, load, clear];
 };
 
 export const usePromiseWithArguments = <T, P, E = string>(
@@ -60,9 +56,5 @@ export const usePromiseWithArguments = <T, P, E = string>(
 
     const clear = () => setResult(new PromiseIdle<T, E>());
 
-    return {
-        load,
-        result,
-        clear,
-    };
+    return [result, load, clear];
 };
