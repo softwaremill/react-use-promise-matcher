@@ -131,7 +131,7 @@ var PromiseIdle = /** @class */ (function () {
 
 var usePromise = function (loaderFn, config) {
     var _a = React.useState(new PromiseIdle()), result = _a[0], setResult = _a[1];
-    var load = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var load = React.useCallback(function () { return __awaiter(void 0, void 0, void 0, function () {
         var data, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -152,13 +152,13 @@ var usePromise = function (loaderFn, config) {
                 case 4: return [2 /*return*/];
             }
         });
-    }); };
+    }); }, [loaderFn]);
     var clear = function () { return setResult(new PromiseIdle()); };
     React.useEffect(function () {
         if (config === null || config === void 0 ? void 0 : config.autoLoad) {
             load();
         }
-    }, []);
+    }, [load, config === null || config === void 0 ? void 0 : config.autoLoad]);
     return {
         load: load,
         result: result,
@@ -167,7 +167,7 @@ var usePromise = function (loaderFn, config) {
 };
 var usePromiseWithArguments = function (loaderFn) {
     var _a = React.useState(new PromiseIdle()), result = _a[0], setResult = _a[1];
-    var load = function (params) { return __awaiter(void 0, void 0, void 0, function () {
+    var load = React.useCallback(function (params) { return __awaiter(void 0, void 0, void 0, function () {
         var data, err_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -188,7 +188,7 @@ var usePromiseWithArguments = function (loaderFn) {
                 case 4: return [2 /*return*/];
             }
         });
-    }); };
+    }); }, [loaderFn]);
     var clear = function () { return setResult(new PromiseIdle()); };
     return {
         load: load,
