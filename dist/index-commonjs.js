@@ -159,11 +159,7 @@ var usePromise = function (loaderFn, config) {
             load();
         }
     }, [load, config === null || config === void 0 ? void 0 : config.autoLoad]);
-    return {
-        load: load,
-        result: result,
-        clear: clear,
-    };
+    return [result, load, clear];
 };
 var usePromiseWithArguments = function (loaderFn) {
     var _a = React.useState(new PromiseIdle()), result = _a[0], setResult = _a[1];
@@ -190,11 +186,7 @@ var usePromiseWithArguments = function (loaderFn) {
         });
     }); }, [loaderFn]);
     var clear = function () { return setResult(new PromiseIdle()); };
-    return {
-        load: load,
-        result: result,
-        clear: clear,
-    };
+    return [result, load, clear];
 };
 
 exports.PromiseIdle = PromiseIdle;

@@ -1,6 +1,8 @@
-[1.1.0]
+[1.2.0]
 
 -   Changed the return value of the hooks from object to array.
+
+[1.1.0][corrupted]
 
 [1.0.8]
 
