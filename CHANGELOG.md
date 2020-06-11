@@ -1,4 +1,4 @@
-[unreleased]
+[1.1.0]
 
 -   Changed the return value of the hooks from object to array.
 
