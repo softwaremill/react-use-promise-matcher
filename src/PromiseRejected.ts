@@ -5,7 +5,7 @@ export class PromiseRejected<T, E> implements PromiseResultShape<T, E> {
     public isLoading = false;
     public isResolved = false;
     public isRejected = true;
-    constructor(private reason: E) {}
+    constructor(public reason: E) {}
 
     public match = <U>(matcher: PromiseMatcher<T, E, U>): U => matcher.Rejected(this.reason);
 
@@ -19,3 +19,7 @@ export class PromiseRejected<T, E> implements PromiseResultShape<T, E> {
 
     public getOr = (orValue: T): T => orValue;
 }
+
+export const isPromiseRejected = <T, E>(
+    promiseResultShape: PromiseResultShape<T, E>,
+): promiseResultShape is PromiseRejected<T, E> => promiseResultShape.isRejected;

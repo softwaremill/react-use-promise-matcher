@@ -17,3 +17,4 @@ var PromiseResolved = /** @class */ (function () {
     return PromiseResolved;
 }());
 export { PromiseResolved };
+export var isPromiseResolved = function (promiseResultShape) { return promiseResultShape.isResolved; };

@@ -1,6 +1,6 @@
 import { PromiseMatcher, PromiseResultShape } from "./types";
 export declare class PromiseResolved<T, E> implements PromiseResultShape<T, E> {
-    private value;
+    value: T;
     isIdle: boolean;
     isLoading: boolean;
     isResolved: boolean;
@@ -12,3 +12,4 @@ export declare class PromiseResolved<T, E> implements PromiseResultShape<T, E> {
     get: () => T;
     getOr: () => T;
 }
+export declare const isPromiseResolved: <T, E>(promiseResultShape: PromiseResultShape<T, E>) => promiseResultShape is PromiseResolved<T, E>;

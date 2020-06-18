@@ -17,3 +17,4 @@ var PromiseRejected = /** @class */ (function () {
     return PromiseRejected;
 }());
 export { PromiseRejected };
+export var isPromiseRejected = function (promiseResultShape) { return promiseResultShape.isRejected; };

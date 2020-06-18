@@ -1,5 +1,8 @@
-import { PromiseRejected } from "./PromiseRejected";
+import { PromiseRejected, isPromiseRejected } from "./PromiseRejected";
 import { PromiseMatcher, PromiseResultShape } from "./types";
+import { PromiseIdle } from "./PromiseIdle";
+import { PromiseLoading } from "./PromiseLoading";
+import { PromiseResolved } from "./PromiseResolved";
 
 describe("PromiseRejected", () => {
     const REJECTION_REASON = "rejection reason";
@@ -49,5 +52,29 @@ describe("PromiseRejected", () => {
     it("calling getOr on PromiseRejected should return 'some alternative' text", () => {
         const alternativeText = "some alternative";
         expect(new PromiseRejected<string, string>(REJECTION_REASON).getOr(alternativeText)).toBe(alternativeText);
+    });
+
+    it("calling isPromiseRejected allows asserting PromiseRejected type and accessing the rejection reason safely", () => {
+        const promiseRejected: PromiseResultShape<string, string> = new PromiseRejected<string, string>(
+            REJECTION_REASON,
+        );
+
+        if (isPromiseRejected(promiseRejected)) {
+            expect(promiseRejected.reason).toEqual(REJECTION_REASON);
+        } else {
+            fail("The PromiseRejected type was not correctly detected");
+        }
+    });
+
+    it("calling isPromiseRejected on PromiseResolved returns false", () => {
+        expect(isPromiseRejected(new PromiseResolved<string, string>("some value"))).toEqual(false);
+    });
+
+    it("calling isPromiseRejected on PromiseIdle returns false", () => {
+        expect(isPromiseRejected(new PromiseIdle())).toEqual(false);
+    });
+
+    it("calling isPromiseRejected on PromiseLoading returns false", () => {
+        expect(isPromiseRejected(new PromiseLoading())).toEqual(false);
     });
 });
