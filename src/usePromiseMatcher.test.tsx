@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render, waitForElement, fireEvent } from "@testing-library/react";
-import { usePromise, usePromiseWithArguments } from "./usePromiseMatcher";
+import { usePromise } from "./usePromiseMatcher";
 import "@testing-library/jest-dom/extend-expect";
 
 interface TestData {
@@ -30,28 +30,7 @@ const loadButtonId = "loadButton";
 const clearButtonId = "clearButton";
 
 const TestComponent: React.FC<TestComponent> = ({ loader }: TestComponent) => {
-    const [result, load, clear] = usePromise<TestData>(loader);
-    return (
-        <div data-testid={containerId}>
-            {result.match({
-                Idle: () => IDLE_MESSAGE,
-                Loading: () => LOADING_MESSAGE,
-                Rejected: (err) => err,
-                Resolved: (res) => res.data,
-            })}
-            <button data-testid={loadButtonId} onClick={load}>
-                Load
-            </button>
-            <button data-testid={clearButtonId} onClick={clear}>
-                Clear
-            </button>
-        </div>
-    );
-};
-
-const TestComponentWithAutoLoad: React.FC<TestComponent> = ({ loader }: TestComponent) => {
-    const [result, load, clear] = usePromise<TestData>(loader, { autoLoad: true });
-
+    const [result, load, clear] = usePromise(loader);
     return (
         <div data-testid={containerId}>
             {result.match({
@@ -71,7 +50,7 @@ const TestComponentWithAutoLoad: React.FC<TestComponent> = ({ loader }: TestComp
 };
 
 const TestComponentWithArguments: React.FC<TestComponentWithArguments> = ({ loader }: TestComponentWithArguments) => {
-    const [result, load, clear] = usePromiseWithArguments<TestData, Params>(loader);
+    const [result, load, clear] = usePromise(loader);
 
     const onClick = () => load({ param: SAMPLE_TEXT });
 
@@ -113,20 +92,6 @@ describe("usePromise", () => {
         const { getByTestId } = render(<TestComponent loader={loadSomePromise} />);
 
         fireEvent.click(getByTestId(loadButtonId));
-        expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
-        expect(loadSomePromise).toHaveBeenCalledTimes(1);
-        /* 
-            TODO replace 'waitForElement' with 'waitFor' and update dependencies when following PRs are merged:
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43108
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43102  
-        */
-        const element = await waitForElement(() => getByTestId(containerId));
-        expect(element).toHaveTextContent(SAMPLE_TEXT);
-    });
-
-    it("Text from testData object should be rendered after the promise has been resolved automatically when the 'autoLoad' flag was set to true", async () => {
-        const { getByTestId } = render(<TestComponentWithAutoLoad loader={loadSomePromise} />);
-
         expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
         expect(loadSomePromise).toHaveBeenCalledTimes(1);
         /* 

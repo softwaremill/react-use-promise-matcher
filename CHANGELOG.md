@@ -1,3 +1,8 @@
+[unreleased]
+
+-   BREAKING CHANGE: Removed `usePromiseWithArguments` - the functionality of both is now contained in `usePromise`.
+-   BREAKING CHANGE: Removed config object from `usePromise` arguments list (there was just `autoLoad` flag at this point)
+
 [1.2.1]
 
 -   Added helper type-guard functions for asserting PromiseRejected and PromiseResolved types in order to access the values directly.
