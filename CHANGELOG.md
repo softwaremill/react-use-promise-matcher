@@ -1,4 +1,4 @@
-[unreleased]
+[1.2.1]
 
 -   Added helper type-guard functions for asserting PromiseRejected and PromiseResolved types in order to access the values directly.
 
