@@ -1,3 +1,2 @@
-import { PromiseLoader, UsePromise, UsePromiseWithArguments, PromiseLoaderWithArguments, UsePromiseConfig } from "./types";
-export declare const usePromise: <T, E = string>(loaderFn: PromiseLoader<T>, config?: UsePromiseConfig | undefined) => UsePromise<T, E>;
-export declare const usePromiseWithArguments: <T, P, E = string>(loaderFn: PromiseLoaderWithArguments<T, P>) => UsePromiseWithArguments<T, P, E>;
+import { PromiseLoader, UsePromise } from "./types";
+export declare const usePromise: <T, Args extends any[], E = string>(loaderFn: PromiseLoader<T, Args>) => UsePromise<T, Args, E>;

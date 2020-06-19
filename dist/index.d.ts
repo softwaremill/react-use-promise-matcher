@@ -1,4 +1,4 @@
-export { usePromise, usePromiseWithArguments } from "./usePromiseMatcher";
+export { usePromise } from "./usePromiseMatcher";
 export { PromiseIdle } from "./PromiseIdle";
 export { PromiseLoading } from "./PromiseLoading";
 export { PromiseRejected, isPromiseRejected } from "./PromiseRejected";

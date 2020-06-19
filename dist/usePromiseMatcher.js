@@ -39,62 +39,36 @@ import { PromiseLoading } from "./PromiseLoading";
 import { PromiseRejected } from "./PromiseRejected";
 import { PromiseResolved } from "./PromiseResolved";
 import { PromiseIdle } from "./PromiseIdle";
-export var usePromise = function (loaderFn, config) {
+export var usePromise = function (loaderFn) {
     var _a = React.useState(new PromiseIdle()), result = _a[0], setResult = _a[1];
-    var load = React.useCallback(function () { return __awaiter(void 0, void 0, void 0, function () {
-        var data, err_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    setResult(new PromiseLoading());
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, loaderFn()];
-                case 2:
-                    data = _a.sent();
-                    setResult(new PromiseResolved(data));
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_1 = _a.sent();
-                    setResult(new PromiseRejected(err_1));
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); }, [loaderFn]);
-    var clear = function () { return setResult(new PromiseIdle()); };
-    React.useEffect(function () {
-        if (config === null || config === void 0 ? void 0 : config.autoLoad) {
-            load();
+    var load = React.useCallback(function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
         }
-    }, [load, config === null || config === void 0 ? void 0 : config.autoLoad]);
-    return [result, load, clear];
-};
-export var usePromiseWithArguments = function (loaderFn) {
-    var _a = React.useState(new PromiseIdle()), result = _a[0], setResult = _a[1];
-    var load = React.useCallback(function (params) { return __awaiter(void 0, void 0, void 0, function () {
-        var data, err_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    setResult(new PromiseLoading());
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, loaderFn(params)];
-                case 2:
-                    data = _a.sent();
-                    setResult(new PromiseResolved(data));
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_2 = _a.sent();
-                    setResult(new PromiseRejected(err_2));
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
+        return __awaiter(void 0, void 0, void 0, function () {
+            var data, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        setResult(new PromiseLoading());
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, loaderFn.apply(void 0, args)];
+                    case 2:
+                        data = _a.sent();
+                        setResult(new PromiseResolved(data));
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_1 = _a.sent();
+                        setResult(new PromiseRejected(err_1));
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
-    }); }, [loaderFn]);
+    }, [loaderFn]);
     var clear = function () { return setResult(new PromiseIdle()); };
     return [result, load, clear];
 };
