@@ -92,6 +92,7 @@ var PromiseRejected = /** @class */ (function () {
     }
     return PromiseRejected;
 }());
+var isPromiseRejected = function (promiseResultShape) { return promiseResultShape.isRejected; };
 
 var PromiseResolved = /** @class */ (function () {
     function PromiseResolved(value) {
@@ -111,6 +112,7 @@ var PromiseResolved = /** @class */ (function () {
     }
     return PromiseResolved;
 }());
+var isPromiseResolved = function (promiseResultShape) { return promiseResultShape.isResolved; };
 
 var PromiseIdle = /** @class */ (function () {
     function PromiseIdle() {
@@ -193,6 +195,8 @@ exports.PromiseIdle = PromiseIdle;
 exports.PromiseLoading = PromiseLoading;
 exports.PromiseRejected = PromiseRejected;
 exports.PromiseResolved = PromiseResolved;
+exports.isPromiseRejected = isPromiseRejected;
+exports.isPromiseResolved = isPromiseResolved;
 exports.usePromise = usePromise;
 exports.usePromiseWithArguments = usePromiseWithArguments;
 //# sourceMappingURL=index-commonjs.js.map
