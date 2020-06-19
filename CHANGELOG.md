@@ -1,3 +1,7 @@
+[unreleased]
+
+-   Added helper type-guard functions for asserting PromiseRejected and PromiseResolved types in order to access the values directly.
+
 [1.2.0]
 
 -   Changed the return value of the hooks from object to array.

@@ -1,5 +1,8 @@
-import { PromiseResolved } from "./PromiseResolved";
+import { PromiseResolved, isPromiseResolved } from "./PromiseResolved";
 import { PromiseMatcher, PromiseResultShape } from "./types";
+import { PromiseRejected } from "./PromiseRejected";
+import { PromiseIdle } from "./PromiseIdle";
+import { PromiseLoading } from "./PromiseLoading";
 
 interface TestInterface {
     value: string;
@@ -55,5 +58,27 @@ describe("PromiseResolved", () => {
         const alternativeText = "some alternative";
         const promiseResolved: PromiseResultShape<string, Error> = new PromiseResolved<string, Error>(RESOLVED_VALUE);
         expect(promiseResolved.getOr(alternativeText)).toBe(RESOLVED_VALUE);
+    });
+
+    it("calling isPromiseResolved on a resolved promise allows asserting PromiseResolved type and accessing the value safely", () => {
+        const promiseResolved: PromiseResultShape<string, string> = new PromiseResolved<string, string>(RESOLVED_VALUE);
+
+        if (isPromiseResolved(promiseResolved)) {
+            expect(promiseResolved.value).toEqual(RESOLVED_VALUE);
+        } else {
+            fail("The PromiseResolved type was not correctly detected");
+        }
+    });
+
+    it("calling isPromiseResolved on PromiseRejected returns false", () => {
+        expect(isPromiseResolved(new PromiseRejected<string, string>("some error"))).toEqual(false);
+    });
+
+    it("calling isPromiseResolved on PromiseIdle returns false", () => {
+        expect(isPromiseResolved(new PromiseIdle())).toEqual(false);
+    });
+
+    it("calling isPromiseResolved on PromiseLoading returns false", () => {
+        expect(isPromiseResolved(new PromiseLoading())).toEqual(false);
     });
 });

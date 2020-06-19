@@ -6,7 +6,7 @@ export class PromiseResolved<T, E> implements PromiseResultShape<T, E> {
     public isResolved = true;
     public isRejected = false;
 
-    constructor(private value: T) {}
+    constructor(public value: T) {}
 
     public match = <U>(matcher: PromiseMatcher<T, E, U>): U => matcher.Resolved(this.value);
 
@@ -20,3 +20,7 @@ export class PromiseResolved<T, E> implements PromiseResultShape<T, E> {
 
     public getOr = (): T => this.get();
 }
+
+export const isPromiseResolved = <T, E>(
+    promiseResultShape: PromiseResultShape<T, E>,
+): promiseResultShape is PromiseResolved<T, E> => promiseResultShape.isResolved;
