@@ -136,6 +136,26 @@ describe("usePromise with a no-arguments loader function", () => {
 
         expect(element).toHaveTextContent(IDLE_MESSAGE);
     });
+
+    it("should not throw `Warning: Can't perform a React state update on an unmounted component.` when Promise resolves after the component was unmounted", async () => {
+        const consoleSpy = jest.spyOn(console, "error");
+
+        // Deferes resolving the promise until after the unmount() is called
+        const loadDeferredPromise = jest.fn(
+            (): Promise<TestData> => new Promise((resolve) => setTimeout(() => resolve(testData), 0)),
+        );
+        const { unmount, container, getByTestId } = render(<TestComponent loader={loadDeferredPromise} />);
+        fireEvent.click(getByTestId(loadButtonId));
+        unmount();
+
+        // Waits for the Promise from loadDeferredPromise to resolve
+        await new Promise((resolve) => setTimeout(() => resolve(), 0));
+
+        expect(container.innerHTML).toEqual("");
+
+        // With unsafe state handling we would get "Warning: Can't perform a React state update on an unmounted component." in the console.error
+        expect(consoleSpy).toHaveBeenCalledTimes(0);
+    });
 });
 
 describe("usePromise with a loader function with arguments", () => {

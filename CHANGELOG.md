@@ -2,6 +2,7 @@
 
 -   BREAKING CHANGE: Removed `usePromiseWithArguments` - the functionality of both is now contained in `usePromise`.
 -   BREAKING CHANGE: Removed config object from `usePromise` arguments list (there was just `autoLoad` flag at this point)
+-   Safe state handling within the hook - avoiding "Warning: Can't perform a React state update on an unmounted component." error in the situation where Promise resolves after the component was unmounted.
 
 [1.2.1]
 
