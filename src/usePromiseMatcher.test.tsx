@@ -72,7 +72,7 @@ const TestComponentWithArguments: React.FC<TestComponentWithArguments> = ({ load
     );
 };
 
-describe("usePromise", () => {
+describe("usePromise with a no-arguments loader function", () => {
     const loadSomePromise = jest.fn((): Promise<TestData> => Promise.resolve(testData));
     const loadFailingPromise = jest.fn((): Promise<TestData> => Promise.reject(ERROR_MESSAGE));
 
@@ -138,7 +138,7 @@ describe("usePromise", () => {
     });
 });
 
-describe("usePromiseWithArguments", () => {
+describe("usePromise with a loader function with arguments", () => {
     const loadSomePromise = jest.fn(
         (params: Params): Promise<TestData> => Promise.resolve<TestData>({ data: params.param }),
     );
