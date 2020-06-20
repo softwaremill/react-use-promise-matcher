@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render, waitForElement, fireEvent } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import { usePromise } from "./usePromiseMatcher";
 import "@testing-library/jest-dom/extend-expect";
 
@@ -89,50 +89,41 @@ describe("usePromise with a no-arguments loader function", () => {
     });
 
     it("Text from testData object should be rendered after the load button was clicked and promise has been resolved", async () => {
-        const { getByTestId } = render(<TestComponent loader={loadSomePromise} />);
+        const { getByTestId, findByTestId } = render(<TestComponent loader={loadSomePromise} />);
 
         fireEvent.click(getByTestId(loadButtonId));
         expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
         expect(loadSomePromise).toHaveBeenCalledTimes(1);
-        /* 
-            TODO replace 'waitForElement' with 'waitFor' and update dependencies when following PRs are merged:
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43108
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43102  
-        */
-        const element = await waitForElement(() => getByTestId(containerId));
+
+        const element = await findByTestId(containerId);
+
         expect(element).toHaveTextContent(SAMPLE_TEXT);
     });
 
     it("Error message should be rendered after the promise has been rejected", async () => {
-        const { getByTestId } = render(<TestComponent loader={loadFailingPromise} />);
+        const { getByTestId, findByTestId } = render(<TestComponent loader={loadFailingPromise} />);
 
         fireEvent.click(getByTestId(loadButtonId));
         expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
         expect(loadFailingPromise).toHaveBeenCalledTimes(1);
-        /* 
-            TODO replace 'waitForElement' with 'waitFor' and update dependencies when following PRs are merged:
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43108
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43102  
-        */
-        const element = await waitForElement(() => getByTestId(containerId));
+
+        const element = await findByTestId(containerId);
+
         expect(element).toHaveTextContent(ERROR_MESSAGE);
     });
 
     it("Idle message should be rendered after the clear function was called", async () => {
-        const { getByTestId } = render(<TestComponent loader={loadSomePromise} />);
+        const { getByTestId, findByTestId } = render(<TestComponent loader={loadSomePromise} />);
 
         fireEvent.click(getByTestId(loadButtonId));
         expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
-        /* 
-            TODO replace 'waitForElement' with 'waitFor' and update dependencies when following PRs are merged:
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43108
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43102  
-        */
-        let element = await waitForElement(() => getByTestId(containerId));
+
+        let element = await findByTestId(containerId);
+
         expect(element).toHaveTextContent(SAMPLE_TEXT);
 
         fireEvent.click(getByTestId(clearButtonId));
-        element = await waitForElement(() => getByTestId(containerId));
+        element = await findByTestId(containerId);
 
         expect(element).toHaveTextContent(IDLE_MESSAGE);
     });
@@ -177,50 +168,41 @@ describe("usePromise with a loader function with arguments", () => {
     });
 
     it("Text from testData object should be rendered after the load button was clicked and promise has been resolved", async () => {
-        const { getByTestId } = render(<TestComponentWithArguments loader={loadSomePromise} />);
+        const { getByTestId, findByTestId } = render(<TestComponentWithArguments loader={loadSomePromise} />);
 
         fireEvent.click(getByTestId(loadButtonId));
         expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
         expect(loadSomePromise).toHaveBeenCalledTimes(1);
-        /* 
-            TODO replace 'waitForElement' with 'waitFor' and update dependencies when following PRs are merged:
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43108
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43102  
-        */
-        const element = await waitForElement(() => getByTestId(containerId));
+
+        const element = await findByTestId(containerId);
+
         expect(element).toHaveTextContent(SAMPLE_TEXT);
     });
 
     it("Error message should be rendered after the promise has been rejected", async () => {
-        const { getByTestId } = render(<TestComponentWithArguments loader={loadFailingPromise} />);
+        const { getByTestId, findByTestId } = render(<TestComponentWithArguments loader={loadFailingPromise} />);
 
         fireEvent.click(getByTestId(loadButtonId));
         expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
         expect(loadFailingPromise).toHaveBeenCalledTimes(1);
-        /* 
-            TODO replace 'waitForElement' with 'waitFor' and update dependencies when following PRs are merged:
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43108
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43102  
-        */
-        const element = await waitForElement(() => getByTestId(containerId));
+
+        const element = await findByTestId(containerId);
+
         expect(element).toHaveTextContent(ERROR_MESSAGE);
     });
 
     it("Idle message should be rendered after the clear function was called", async () => {
-        const { getByTestId } = render(<TestComponentWithArguments loader={loadSomePromise} />);
+        const { getByTestId, findByTestId } = render(<TestComponentWithArguments loader={loadSomePromise} />);
 
         fireEvent.click(getByTestId(loadButtonId));
         expect(getByTestId(containerId)).toHaveTextContent(LOADING_MESSAGE);
-        /* 
-            TODO replace 'waitForElement' with 'waitFor' and update dependencies when following PRs are merged:
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43108
-            - https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43102  
-        */
-        let element = await waitForElement(() => getByTestId(containerId));
+
+        let element = await findByTestId(containerId);
+
         expect(element).toHaveTextContent(SAMPLE_TEXT);
 
         fireEvent.click(getByTestId(clearButtonId));
-        element = await waitForElement(() => getByTestId(containerId));
+        element = await findByTestId(containerId);
 
         expect(element).toHaveTextContent(IDLE_MESSAGE);
     });
