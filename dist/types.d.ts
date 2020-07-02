@@ -15,10 +15,5 @@ export interface PromiseResultShape<T, E> {
     isResolved: boolean;
     isRejected: boolean;
 }
-export declare type PromiseLoader<T> = () => Promise<T>;
-export declare type UsePromise<T, E = string> = [PromiseResultShape<T, E>, PromiseLoader<void>, () => void];
-export declare type PromiseLoaderWithArguments<T, P> = (params: P) => Promise<T>;
-export declare type UsePromiseWithArguments<T, P, E = string> = [PromiseResultShape<T, E>, PromiseLoaderWithArguments<void, P>, () => void];
-export interface UsePromiseConfig {
-    autoLoad: boolean;
-}
+export declare type PromiseLoader<T, Args extends any[]> = (...args: Args) => Promise<T>;
+export declare type UsePromise<T, Args extends any[], E = string> = [PromiseResultShape<T, E>, PromiseLoader<void, Args>, () => void];

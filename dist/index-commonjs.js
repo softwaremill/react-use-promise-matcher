@@ -131,63 +131,47 @@ var PromiseIdle = /** @class */ (function () {
     return PromiseIdle;
 }());
 
-var usePromise = function (loaderFn, config) {
+var usePromise = function (loaderFn) {
     var _a = React.useState(new PromiseIdle()), result = _a[0], setResult = _a[1];
-    var load = React.useCallback(function () { return __awaiter(void 0, void 0, void 0, function () {
-        var data, err_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    setResult(new PromiseLoading());
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, loaderFn()];
-                case 2:
-                    data = _a.sent();
-                    setResult(new PromiseResolved(data));
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_1 = _a.sent();
-                    setResult(new PromiseRejected(err_1));
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); }, [loaderFn]);
-    var clear = function () { return setResult(new PromiseIdle()); };
-    React.useEffect(function () {
-        if (config === null || config === void 0 ? void 0 : config.autoLoad) {
-            load();
+    var unmounted = React.useRef(false);
+    var safeSetResult = React.useCallback(function (res) {
+        if (unmounted.current) {
+            return;
         }
-    }, [load, config === null || config === void 0 ? void 0 : config.autoLoad]);
-    return [result, load, clear];
-};
-var usePromiseWithArguments = function (loaderFn) {
-    var _a = React.useState(new PromiseIdle()), result = _a[0], setResult = _a[1];
-    var load = React.useCallback(function (params) { return __awaiter(void 0, void 0, void 0, function () {
-        var data, err_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    setResult(new PromiseLoading());
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, loaderFn(params)];
-                case 2:
-                    data = _a.sent();
-                    setResult(new PromiseResolved(data));
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_2 = _a.sent();
-                    setResult(new PromiseRejected(err_2));
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
+        setResult(res);
+    }, []);
+    var load = React.useCallback(function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return __awaiter(void 0, void 0, void 0, function () {
+            var data, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        safeSetResult(new PromiseLoading());
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, loaderFn.apply(void 0, args)];
+                    case 2:
+                        data = _a.sent();
+                        safeSetResult(new PromiseResolved(data));
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_1 = _a.sent();
+                        safeSetResult(new PromiseRejected(err_1));
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
-    }); }, [loaderFn]);
-    var clear = function () { return setResult(new PromiseIdle()); };
+    }, [loaderFn]);
+    var clear = function () { return safeSetResult(new PromiseIdle()); };
+    React.useEffect(function () { return function () {
+        unmounted.current = true;
+    }; }, []);
     return [result, load, clear];
 };
 
@@ -198,5 +182,4 @@ exports.PromiseResolved = PromiseResolved;
 exports.isPromiseRejected = isPromiseRejected;
 exports.isPromiseResolved = isPromiseResolved;
 exports.usePromise = usePromise;
-exports.usePromiseWithArguments = usePromiseWithArguments;
 //# sourceMappingURL=index-commonjs.js.map
