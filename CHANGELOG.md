@@ -1,4 +1,4 @@
-## [unreleased]
+## [1.3.0]
 
 -   BREAKING CHANGE: Removed `usePromiseWithArguments` - the functionality of both is now contained in `usePromise`.
 -   BREAKING CHANGE: Removed config object from `usePromise` arguments list (there was just `autoLoad` flag at this point)
