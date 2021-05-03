@@ -11,3 +11,6 @@ logs
 
 # OS
 .DS_*
+
+# WEBSTORM
+.idea
