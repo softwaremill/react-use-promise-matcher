@@ -61,44 +61,15 @@ export const EchoComponent = () => {
 
 The hook accepts a function that returns a `Promise`, as simple as that. The type parameter defines the type of data wrapped by the `Promise`. It returns an array with a `result` object that represents the result of the asynchronous operation and lets us match its states and a `load` function which simply calls the function provided as an argument within the hook.
 
-#### Auto-resolving the Promise on component mount
-
-We could also skip the `load` function call in the `useEffect` hook and tell `usePromise` to automatically start resolving by passing a second argument to the hook with some configuration:
-
-```
-const [result] = usePromise<string>(() => echo("Echo!"), { autoLoad: true });
-```
-
-The rest of the component would still look and work exactly the same.
-
-It's also worth mentioning that matching the `Idle` state is optional - if you decide to start loading the data right after the component is mounted, it makes no sense to use it, as `result` will move directly into the `Loading` state. The mapping for the `Loading` state will be taken for the `Idle` state if none is passed.
-
-#### Error handling
-
-We can provide a second type parameter to the hook, which defines the type of error that is returned on rejection. By default it is set to string. If we are using some type of domain exceptions in our services we could use the hook as following:
-
-```tsx
-const [result] = usePromise<SomeData, MyDomainException>(() => myServiceMethod(someArgument));
-```
-
-and then we would match the `Rejected` state like that:
-
-```typescript
-result.match({
-    //...
-    Rejected: (err: MyDomainException) => err.someCustomField,
-    //...
-});
-```
+It's also worth mentioning that matching the `Idle` state is optional - the mapping for the `Loading` state will be taken for the `Idle` state if none is passed.
 
 #### Using the hook with an async function that receives arguments
 
-As you might have noticed, in the examples we passed a function that was not taking any parameters to the hook. We might want to be able to pass some arguments to it, for example if they depend on user input. In that case we need to use the `usePromiseWithArguments` hook:
-
+Sometimes it is necessary to pass some arguments to the promise loading function. You can simply pass such function as an argument to he `usePromise` hook, it's type safe as the types of the arguments will be inferred in the returned loading function. It's also possible to explicitly define them in the second type argument of the hook.
 ```tsx
 export const UserEchoComponent = () => {
   const [text, setText] = React.useState("Hello!");
-  const [result, load] = usePromiseWithArguments<string, string>(
+  const [result, load] = usePromise<string, [string]>(
     (param: string) => echo(param)
   );
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -119,7 +90,24 @@ export const UserEchoComponent = () => {
         Resolved: echoResponse => <span>Echo says "{echoResponse}"</span>
       })}
     </div>
-  )
+  );
+}
 ```
 
-In this example, the parameters of the async function used depend on the user input, so we cannot pass them directly to the hook, but we need to pass them to the `load` function. The `usePromiseWithArguments` hook takes three type parameters (the last one is still opt-in): the first and the last correspond to those in `usePromise`, the second one though is the type of the argument passed to the `load` function.
+#### Error handling
+
+We can provide a third type parameter to the hook, which defines the type of error that is returned on rejection. By default, it is set to string. If we are using some type of domain exceptions in our services we could use the hook as following:
+
+```tsx
+const [result] = usePromise<SomeData, [], MyDomainException>(() => myServiceMethod(someArgument));
+```
+
+and then we would match the `Rejected` state like that:
+
+```typescript
+result.match({
+    //...
+    Rejected: (err: MyDomainException) => err.someCustomField,
+    //...
+});
+```
