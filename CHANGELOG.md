@@ -1,3 +1,7 @@
+## [1.3.1]
+
+-   Updated documentation
+
 ## [1.3.0]
 
 -   BREAKING CHANGE: Removed `usePromiseWithArguments` - the functionality of both is now contained in `usePromise`.
