@@ -21,6 +21,6 @@ jobs:
       - name: Test
         run: yarn test-ci
       - name: Publish
-        uses: yarn publish
+        run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
