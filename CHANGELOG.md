@@ -1,6 +1,7 @@
-## [unreleased]
+## [1.3.2]
 
--   Added flatMap function to PromiseResultShape api
+- Added flatMap function to PromiseResultShape api
+- Migrated to GitHub Actions
 
 ## [1.3.1]
 
