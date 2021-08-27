@@ -12,6 +12,8 @@ export class PromiseResolved<T, E> implements PromiseResultShape<T, E> {
 
     public map = <U>(fn: (value: T) => U): PromiseResultShape<U, E> => new PromiseResolved<U, E>(fn(this.value));
 
+    public flatMap = <U>(fn: (value: T) => PromiseResultShape<U, E>): PromiseResultShape<U, E> => fn(this.value);
+
     public mapErr = <U>(): PromiseResultShape<T, U> => new PromiseResolved<T, U>(this.value);
 
     public get = (): T => {
