@@ -81,4 +81,46 @@ describe("PromiseResolved", () => {
     it("calling isPromiseResolved on PromiseLoading returns false", () => {
         expect(isPromiseResolved(new PromiseLoading())).toEqual(false);
     });
+
+    it("calling flatMap on PromiseResolved with provided mapper should return new PromiseResolved instance with mapped value", () => {
+        const original: PromiseResultShape<TestInterface, Error> = new PromiseResolved<TestInterface, Error>(
+            RESOLVED_OBJECT,
+        );
+        const mapped: PromiseResultShape<string, Error> = original.flatMap<string>(
+            (obj) => new PromiseResolved(`${obj.value} was mapped`),
+        );
+        expect(original).toBeInstanceOf(PromiseResolved);
+        expect(mapped).toBeInstanceOf(PromiseResolved);
+        expect(mapped.get()).toBe(`${RESOLVED_OBJECT.value} was mapped`);
+    });
+
+    it("calling flatMap on PromiseResolved with provided mapper should return new PromiseRejected instance with an error from the second promise", () => {
+        const original: PromiseResultShape<TestInterface, Error> = new PromiseResolved<TestInterface, Error>(
+            RESOLVED_OBJECT,
+        );
+        const mapped: PromiseResultShape<string, Error> = original.flatMap<string>(
+            (_) => new PromiseRejected(new Error("some error")),
+        );
+        expect(original).toBeInstanceOf(PromiseResolved);
+        expect(mapped).toBeInstanceOf(PromiseRejected);
+        expect((mapped as PromiseRejected<string, Error>).reason.message).toBe("some error");
+    });
+
+    it("calling flatMap on PromiseResolved with provided mapper should return new PromiseLoading instance", () => {
+        const original: PromiseResultShape<TestInterface, Error> = new PromiseResolved<TestInterface, Error>(
+            RESOLVED_OBJECT,
+        );
+        const mapped: PromiseResultShape<string, Error> = original.flatMap<string>((_) => new PromiseLoading());
+        expect(original).toBeInstanceOf(PromiseResolved);
+        expect(mapped).toBeInstanceOf(PromiseLoading);
+    });
+
+    it("calling flatMap on PromiseResolved with provided mapper should return new PromiseIdle instance", () => {
+        const original: PromiseResultShape<TestInterface, Error> = new PromiseResolved<TestInterface, Error>(
+            RESOLVED_OBJECT,
+        );
+        const mapped: PromiseResultShape<string, Error> = original.flatMap<string>((_) => new PromiseIdle());
+        expect(original).toBeInstanceOf(PromiseResolved);
+        expect(mapped).toBeInstanceOf(PromiseIdle);
+    });
 });

@@ -11,6 +11,8 @@ export class PromiseRejected<T, E> implements PromiseResultShape<T, E> {
 
     public map = <U>(): PromiseResultShape<U, E> => new PromiseRejected<U, E>(this.reason);
 
+    public flatMap = <U>(): PromiseResultShape<U, E> => new PromiseRejected<U, E>(this.reason);
+
     public mapErr = <U>(fn: (err: E) => U): PromiseResultShape<T, U> => new PromiseRejected<T, U>(fn(this.reason));
 
     public get = (): T => {
