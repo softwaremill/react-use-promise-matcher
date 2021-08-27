@@ -1,3 +1,7 @@
+## [unreleased]
+
+-   Added flatMap function to PromiseResultShape api
+
 ## [1.3.1]
 
 -   Updated documentation
