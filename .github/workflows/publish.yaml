@@ -13,13 +13,14 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
+          registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Build
         run: yarn build
       - name: Test
         run: yarn test-ci
-      - name: NPM Publish
-        uses: JS-DevTools/npm-publish@v1
+      - name: Publish
+        run: yarn publish
         env:
-          token: ${{ secrets.NPM_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
