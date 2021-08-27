@@ -10,6 +10,8 @@ export class PromiseIdle<T, E> implements PromiseResultShape<T, E> {
 
     public map = <U>(): PromiseResultShape<U, E> => new PromiseIdle<U, E>();
 
+    public flatMap = <U>(): PromiseResultShape<U, E> => new PromiseIdle<U, E>();
+
     public mapErr = <U>(): PromiseResultShape<T, U> => new PromiseIdle<T, U>();
 
     public get = (): T => {

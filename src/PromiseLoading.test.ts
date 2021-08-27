@@ -1,5 +1,6 @@
 import { PromiseLoading } from "./PromiseLoading";
 import { PromiseMatcher, PromiseResultShape } from "./types";
+import { PromiseResolved } from "./PromiseResolved";
 
 describe("PromiseLoading", () => {
     const LOADING_TEXT = "Loading...";
@@ -44,5 +45,12 @@ describe("PromiseLoading", () => {
     it("calling getOr on PromiseLoading should return 'some alternative' text", () => {
         const alternativeText = "some alternative";
         expect(new PromiseLoading<string, Error>().getOr(alternativeText)).toBe(alternativeText);
+    });
+
+    it("calling flatMap on PromiseLoading with provided mapper should return new PromiseLoading instance", () => {
+        const original: PromiseResultShape<number, Error> = new PromiseLoading<number, Error>();
+        const mapped: PromiseResultShape<string, Error> = original.flatMap<string>((n) => new PromiseResolved(`${n}`));
+        expect(original).toBeInstanceOf(PromiseLoading);
+        expect(mapped).toBeInstanceOf(PromiseLoading);
     });
 });

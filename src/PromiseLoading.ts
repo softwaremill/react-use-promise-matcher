@@ -10,6 +10,8 @@ export class PromiseLoading<T, E> implements PromiseResultShape<T, E> {
 
     public map = <U>(): PromiseResultShape<U, E> => new PromiseLoading<U, E>();
 
+    public flatMap = <U>(): PromiseResultShape<U, E> => new PromiseLoading<U, E>();
+
     public mapErr = <U>(): PromiseResultShape<T, U> => new PromiseLoading<T, U>();
 
     public get = (): T => {

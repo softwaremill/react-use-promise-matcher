@@ -51,4 +51,11 @@ describe("PromiseIdle", () => {
         const alternativeText = "some alternative";
         expect(new PromiseIdle<string, Error>().getOr(alternativeText)).toBe(alternativeText);
     });
+
+    it("calling flatMap on PromiseIdle with provided mapper should return new PromiseIdle instance", () => {
+        const original: PromiseResultShape<number, Error> = new PromiseIdle<number, Error>();
+        const mapped: PromiseResultShape<string, Error> = original.flatMap<string>((_) => new PromiseIdle());
+        expect(original).toBeInstanceOf(PromiseIdle);
+        expect(mapped).toBeInstanceOf(PromiseIdle);
+    });
 });
