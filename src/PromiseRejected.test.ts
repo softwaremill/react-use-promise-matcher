@@ -77,4 +77,13 @@ describe("PromiseRejected", () => {
     it("calling isPromiseRejected on PromiseLoading returns false", () => {
         expect(isPromiseRejected(new PromiseLoading())).toEqual(false);
     });
+
+    it("calling flatMap on PromiseRejected with provided mapper should return new PromiseRejected instance", () => {
+        const original: PromiseResultShape<number, Error> = new PromiseRejected<number, Error>(
+            new Error(REJECTION_REASON),
+        );
+        const mapped: PromiseResultShape<string, Error> = original.flatMap<string>((n) => new PromiseResolved(`${n}`));
+        expect(original).toBeInstanceOf(PromiseRejected);
+        expect(mapped).toBeInstanceOf(PromiseRejected);
+    });
 });
