@@ -33,6 +33,4 @@ jobs:
         run: yarn build
       - name: Test
         run: yarn test-ci
-      - name: NPM Publish
-        uses: JS-DevTools/npm-publish@v1
 
