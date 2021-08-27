@@ -22,4 +22,4 @@ jobs:
       - name: NPM Publish
         uses: JS-DevTools/npm-publish@v1
         env:
-          token: ${{ secrets.NPM_AUTH_TOKEN }}
+          token: ${{ secrets.NPM_TOKEN }}
