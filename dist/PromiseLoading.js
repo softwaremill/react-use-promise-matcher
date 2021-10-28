@@ -6,6 +6,7 @@ var PromiseLoading = /** @class */ (function () {
         this.isRejected = false;
         this.match = function (matcher) { return matcher.Loading(); };
         this.map = function () { return new PromiseLoading(); };
+        this.flatMap = function () { return new PromiseLoading(); };
         this.mapErr = function () { return new PromiseLoading(); };
         this.get = function () {
             throw new Error("Cannot get the value while the Promise is loading");

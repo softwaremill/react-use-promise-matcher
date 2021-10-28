@@ -8,6 +8,7 @@ export declare class PromiseRejected<T, E> implements PromiseResultShape<T, E> {
     constructor(reason: E);
     match: <U>(matcher: PromiseMatcher<T, E, U>) => U;
     map: <U>() => PromiseResultShape<U, E>;
+    flatMap: <U>() => PromiseResultShape<U, E>;
     mapErr: <U>(fn: (err: E) => U) => PromiseResultShape<T, U>;
     get: () => T;
     getOr: (orValue: T) => T;

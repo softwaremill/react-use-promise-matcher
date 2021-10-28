@@ -1,6 +1,7 @@
 import { PromiseMatcher, PromiseResultShape } from "./types";
 import { PromiseIdle } from "./PromiseIdle";
 
+// eslint-disable-rule no-unused-vars
 describe("PromiseIdle", () => {
     const IDLE_TEXT = "Idle";
     const LOADING_TEXT = "Loading...";

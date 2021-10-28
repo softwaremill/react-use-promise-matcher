@@ -24,3 +24,9 @@ export type UsePromise<T, Args extends any[], E = string> = [
     PromiseLoader<void, Args>,
     () => void,
 ];
+export type UsePromiseWithInterval<T, E, A extends any[]> = [
+    PromiseResultShape<T, E>,
+    (...args: A) => void,
+    () => void,
+    () => void,
+];

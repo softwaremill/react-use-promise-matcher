@@ -8,6 +8,7 @@ var PromiseResolved = /** @class */ (function () {
         this.isRejected = false;
         this.match = function (matcher) { return matcher.Resolved(_this.value); };
         this.map = function (fn) { return new PromiseResolved(fn(_this.value)); };
+        this.flatMap = function (fn) { return fn(_this.value); };
         this.mapErr = function () { return new PromiseResolved(_this.value); };
         this.get = function () {
             return _this.value;
