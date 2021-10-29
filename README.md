@@ -94,7 +94,7 @@ export const UserEchoComponent = () => {
 
 #### Using promise matcher with specific interval, on-demand
 
-If you need to repeatedly ask the server for specific data, and do that on-demand, you can use `usePromiseWithInterval` hook. Pass the `interval` parameter a second argument after the `loaderFn`, and receive the `result` and `start` & `stop` functions in return.
+If you need to repeatedly poll the data (eg. by sending a request to the server), and do that on-demand, you can use `usePromiseWithInterval` hook. Pass the interval as a second argument, and receive the `result` and `start` & `stop` functions in return.
 
 ```tsx
 export const UserEchoWithIntervalComponent = () => {
