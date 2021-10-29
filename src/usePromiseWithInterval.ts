@@ -12,8 +12,8 @@ export const usePromiseWithInterval = <T, Args extends any[], E = string>(
 
     const start = useCallback(
         (...args: Args) => {
-            timer.current = setTimeout(function tick() {
-                load(...args);
+            timer.current = setTimeout(async function tick() {
+                await load(...args);
                 timer.current = setTimeout(tick, interval);
             }, interval);
         },
