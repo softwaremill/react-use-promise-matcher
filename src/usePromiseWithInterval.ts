@@ -12,21 +12,21 @@ export const usePromiseWithInterval = <T, Args extends any[], E = string>(
 
     const start = useCallback(
         (...args: Args) => {
-            function tick(): void {
+            timer.current = setTimeout(function tick() {
                 load(...args);
-            }
-            timer.current = setInterval(tick, interval);
+                timer.current = setTimeout(tick, interval);
+            }, interval);
         },
         [load, interval, timer],
     );
 
     const stop = useCallback(() => {
-        clearInterval(timer.current);
+        clearTimeout(timer.current);
     }, [timer]);
 
     useEffect(() => {
         return () => {
-            clearInterval(timer.current);
+            clearTimeout(timer.current);
             timer.current = null;
         };
     }, [timer]);
