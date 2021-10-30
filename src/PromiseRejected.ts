@@ -21,11 +21,11 @@ export class PromiseRejected<T, E> implements PromiseResultShape<T, E> {
 
     public getOr = (orValue: T): T => orValue;
 
-    public onResolved = (_: (value: T) => void) => {
+    public onResolved = <U>(_: (value: T) => U) => {
         return this;
     };
 
-    public onRejected = (fn: (err: E) => void) => {
+    public onRejected = <U>(fn: (err: E) => U) => {
         fn(this.reason);
         return this;
     };

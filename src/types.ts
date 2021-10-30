@@ -12,8 +12,8 @@ export interface PromiseResultShape<T, E> {
     mapErr: <U>(fn: (err: E) => U) => PromiseResultShape<T, U>;
     get: () => T;
     getOr: (orValue: T) => T;
-    onResolved: (fn: (value: T) => void) => PromiseResultShape<T, E>;
-    onRejected: (fn: (err: E) => void) => PromiseResultShape<T, E>;
+    onResolved: <U>(fn: (value: T) => U) => PromiseResultShape<T, E>;
+    onRejected: <U>(fn: (err: E) => U) => PromiseResultShape<T, E>;
     onLoading: <U>(fn: () => U) => PromiseResultShape<T, E>;
     onIdle: <U>(fn: () => U) => PromiseResultShape<T, E>;
     isIdle: boolean;
