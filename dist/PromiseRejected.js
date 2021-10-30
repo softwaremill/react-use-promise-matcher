@@ -8,11 +8,25 @@ var PromiseRejected = /** @class */ (function () {
         this.isRejected = true;
         this.match = function (matcher) { return matcher.Rejected(_this.reason); };
         this.map = function () { return new PromiseRejected(_this.reason); };
+        this.flatMap = function () { return new PromiseRejected(_this.reason); };
         this.mapErr = function (fn) { return new PromiseRejected(fn(_this.reason)); };
         this.get = function () {
             throw _this.reason;
         };
         this.getOr = function (orValue) { return orValue; };
+        this.onResolved = function (_) {
+            return _this;
+        };
+        this.onRejected = function (fn) {
+            fn(_this.reason);
+            return _this;
+        };
+        this.onLoading = function (_) {
+            return _this;
+        };
+        this.onIdle = function (_) {
+            return _this;
+        };
     }
     return PromiseRejected;
 }());

@@ -59,17 +59,32 @@ function __generator(thisArg, body) {
 
 var PromiseLoading = /** @class */ (function () {
     function PromiseLoading() {
+        var _this = this;
         this.isIdle = false;
         this.isLoading = true;
         this.isResolved = false;
         this.isRejected = false;
         this.match = function (matcher) { return matcher.Loading(); };
         this.map = function () { return new PromiseLoading(); };
+        this.flatMap = function () { return new PromiseLoading(); };
         this.mapErr = function () { return new PromiseLoading(); };
         this.get = function () {
             throw new Error("Cannot get the value while the Promise is loading");
         };
         this.getOr = function (orValue) { return orValue; };
+        this.onResolved = function (_) {
+            return _this;
+        };
+        this.onRejected = function (_) {
+            return _this;
+        };
+        this.onLoading = function (fn) {
+            fn();
+            return _this;
+        };
+        this.onIdle = function (_) {
+            return _this;
+        };
     }
     return PromiseLoading;
 }());
@@ -84,11 +99,25 @@ var PromiseRejected = /** @class */ (function () {
         this.isRejected = true;
         this.match = function (matcher) { return matcher.Rejected(_this.reason); };
         this.map = function () { return new PromiseRejected(_this.reason); };
+        this.flatMap = function () { return new PromiseRejected(_this.reason); };
         this.mapErr = function (fn) { return new PromiseRejected(fn(_this.reason)); };
         this.get = function () {
             throw _this.reason;
         };
         this.getOr = function (orValue) { return orValue; };
+        this.onResolved = function (_) {
+            return _this;
+        };
+        this.onRejected = function (fn) {
+            fn(_this.reason);
+            return _this;
+        };
+        this.onLoading = function (_) {
+            return _this;
+        };
+        this.onIdle = function (_) {
+            return _this;
+        };
     }
     return PromiseRejected;
 }());
@@ -104,11 +133,25 @@ var PromiseResolved = /** @class */ (function () {
         this.isRejected = false;
         this.match = function (matcher) { return matcher.Resolved(_this.value); };
         this.map = function (fn) { return new PromiseResolved(fn(_this.value)); };
+        this.flatMap = function (fn) { return fn(_this.value); };
         this.mapErr = function () { return new PromiseResolved(_this.value); };
         this.get = function () {
             return _this.value;
         };
         this.getOr = function () { return _this.get(); };
+        this.onResolved = function (fn) {
+            fn(_this.get());
+            return _this;
+        };
+        this.onRejected = function (_) {
+            return _this;
+        };
+        this.onLoading = function (_) {
+            return _this;
+        };
+        this.onIdle = function (_) {
+            return _this;
+        };
     }
     return PromiseResolved;
 }());
@@ -116,17 +159,32 @@ var isPromiseResolved = function (promiseResultShape) { return promiseResultShap
 
 var PromiseIdle = /** @class */ (function () {
     function PromiseIdle() {
+        var _this = this;
         this.isIdle = true;
         this.isLoading = false;
         this.isResolved = false;
         this.isRejected = false;
         this.match = function (matcher) { return (matcher.Idle ? matcher.Idle() : matcher.Loading()); };
         this.map = function () { return new PromiseIdle(); };
+        this.flatMap = function () { return new PromiseIdle(); };
         this.mapErr = function () { return new PromiseIdle(); };
         this.get = function () {
             throw new Error("Cannot get the value while the Promise is idle");
         };
         this.getOr = function (orValue) { return orValue; };
+        this.onResolved = function (_) {
+            return _this;
+        };
+        this.onRejected = function (_) {
+            return _this;
+        };
+        this.onLoading = function (_) {
+            return _this;
+        };
+        this.onIdle = function (fn) {
+            fn();
+            return _this;
+        };
     }
     return PromiseIdle;
 }());
