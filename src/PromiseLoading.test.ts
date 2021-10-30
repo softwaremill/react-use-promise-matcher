@@ -53,4 +53,28 @@ describe("PromiseLoading", () => {
         expect(original).toBeInstanceOf(PromiseLoading);
         expect(mapped).toBeInstanceOf(PromiseLoading);
     });
+
+    it("calling onResolved on PromiseLoading should not invoke provided callback", () => {
+        const callback = jest.fn();
+        new PromiseLoading().onResolved(callback);
+        expect(callback).not.toHaveBeenCalled();
+    });
+
+    it("calling onRejected on PromiseResolved should not invoke provided callback", () => {
+        const callback = jest.fn();
+        new PromiseLoading().onRejected(callback);
+        expect(callback).not.toHaveBeenCalled();
+    });
+
+    it("calling onLoading on PromiseLoading should invoke provided callback", () => {
+        const callback = jest.fn();
+        new PromiseLoading().onLoading(callback);
+        expect(callback).toHaveBeenCalledTimes(1);
+    });
+
+    it("calling onIdle on PromiseLoading should not invoke provided callback", () => {
+        const callback = jest.fn();
+        new PromiseLoading().onIdle(callback);
+        expect(callback).not.toHaveBeenCalled();
+    });
 });

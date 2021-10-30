@@ -19,4 +19,21 @@ export class PromiseIdle<T, E> implements PromiseResultShape<T, E> {
     };
 
     public getOr = (orValue: T): T => orValue;
+
+    public onResolved = (_: (value: T) => void) => {
+        return this;
+    };
+
+    public onRejected = (_: (err: E) => void) => {
+        return this;
+    };
+
+    public onLoading = <U>(_: () => U) => {
+        return this;
+    };
+
+    public onIdle = <U>(fn: () => U) => {
+        fn();
+        return this;
+    };
 }
