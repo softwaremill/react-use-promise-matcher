@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import { usePromise } from "./usePromiseMatcher";
 import "@testing-library/jest-dom/extend-expect";
 
@@ -17,6 +17,14 @@ interface Params {
 
 interface TestComponentWithArguments {
     loader: (params: Params) => Promise<TestData>;
+}
+
+interface TestComponentWithCallbackArguments {
+    loader: (params: Params) => Promise<TestData>;
+    onIdle: () => void;
+    onLoading: () => void;
+    onRejected: () => void;
+    onResolved: () => void;
 }
 
 const IDLE_MESSAGE = "Waiting for call";
@@ -69,6 +77,26 @@ const TestComponentWithArguments: React.FC<TestComponentWithArguments> = ({ load
                 Clear
             </button>
         </div>
+    );
+};
+
+const TestComponentWithCallbacks: React.FC<TestComponentWithCallbackArguments> = ({
+    loader,
+    onLoading,
+    onRejected,
+    onResolved,
+    onIdle,
+}) => {
+    const [result, load] = usePromise(loader);
+
+    const onClick = () => load({ param: SAMPLE_TEXT });
+
+    result.onIdle(onIdle).onLoading(onLoading).onResolved(onResolved).onRejected(onRejected);
+
+    return (
+        <button onClick={onClick} data-testid={loadButtonId}>
+            Load
+        </button>
     );
 };
 
@@ -140,7 +168,7 @@ describe("usePromise with a no-arguments loader function", () => {
         unmount();
 
         // Waits for the Promise from loadDeferredPromise to resolve
-        await new Promise((resolve) => setTimeout(() => resolve(), 0));
+        await new Promise((resolve) => setTimeout(() => resolve(""), 0));
 
         expect(container.innerHTML).toEqual("");
 
@@ -205,5 +233,59 @@ describe("usePromise with a loader function with arguments", () => {
         element = await findByTestId(containerId);
 
         expect(element).toHaveTextContent(IDLE_MESSAGE);
+    });
+
+    it("Invokes callback functions for resolved promise", async () => {
+        const onIdle = jest.fn();
+        const onLoading = jest.fn();
+        const onRejected = jest.fn();
+        const onResolved = jest.fn();
+
+        const { getByTestId } = render(
+            <TestComponentWithCallbacks
+                loader={loadSomePromise}
+                onIdle={onIdle}
+                onLoading={onLoading}
+                onRejected={onRejected}
+                onResolved={onResolved}
+            />,
+        );
+
+        fireEvent.click(getByTestId(loadButtonId));
+
+        expect(onIdle).toHaveBeenCalledTimes(1);
+        expect(onLoading).toHaveBeenCalledTimes(1);
+
+        await waitFor(() => {
+            expect(onResolved).toHaveBeenCalledTimes(1);
+            expect(onRejected).not.toHaveBeenCalled();
+        });
+    });
+
+    it("Invokes callback functions for rejected promise", async () => {
+        const onIdle = jest.fn();
+        const onLoading = jest.fn();
+        const onRejected = jest.fn();
+        const onResolved = jest.fn();
+
+        const { getByTestId } = render(
+            <TestComponentWithCallbacks
+                loader={loadFailingPromise}
+                onIdle={onIdle}
+                onLoading={onLoading}
+                onRejected={onRejected}
+                onResolved={onResolved}
+            />,
+        );
+
+        fireEvent.click(getByTestId(loadButtonId));
+
+        expect(onIdle).toHaveBeenCalledTimes(1);
+        expect(onLoading).toHaveBeenCalledTimes(1);
+
+        await waitFor(() => {
+            expect(onRejected).toHaveBeenCalledTimes(1);
+            expect(onResolved).not.toHaveBeenCalled();
+        });
     });
 });
