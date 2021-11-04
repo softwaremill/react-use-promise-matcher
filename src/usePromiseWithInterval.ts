@@ -8,7 +8,7 @@ export const usePromiseWithInterval = <T, Args extends any[], E = string>(
 ): UsePromiseWithInterval<T, E, Args> => {
     const [result, load, reset] = usePromise<T, Args, E>(loaderFn);
 
-    const timer: MutableRefObject<any | null> = useRef(null);
+    const timer: MutableRefObject<number | undefined> = useRef(undefined);
 
     const start = useCallback(
         (...args: Args) => {
@@ -27,7 +27,7 @@ export const usePromiseWithInterval = <T, Args extends any[], E = string>(
     useEffect(() => {
         return () => {
             clearTimeout(timer.current);
-            timer.current = null;
+            timer.current = undefined;
         };
     }, [timer]);
 
