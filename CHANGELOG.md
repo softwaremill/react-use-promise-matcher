@@ -1,3 +1,7 @@
+## [1.4.2]
+
+- Chainable callback methods added: `onResolved`, `onRejected`, `onIdle`, and `onLoading`
+
 ## [1.3.2]
 
 - Added flatMap function to PromiseResultShape api
