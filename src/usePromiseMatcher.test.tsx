@@ -140,7 +140,7 @@ describe("usePromise with a no-arguments loader function", () => {
         unmount();
 
         // Waits for the Promise from loadDeferredPromise to resolve
-        await new Promise((resolve) => setTimeout(() => resolve(), 0));
+        await new Promise((resolve) => setTimeout(() => resolve(""), 0));
 
         expect(container.innerHTML).toEqual("");
 
