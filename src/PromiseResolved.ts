@@ -22,20 +22,20 @@ export class PromiseResolved<T, E> implements PromiseResultShape<T, E> {
 
     public getOr = (): T => this.get();
 
-    public onResolved = <U>(fn: (value: T) => U) => {
+    public onResolved = (fn: (value: T) => unknown) => {
         fn(this.get());
         return this;
     };
 
-    public onRejected = <U>(_: (err: E) => U) => {
+    public onRejected = (_: (err: E) => unknown) => {
         return this;
     };
 
-    public onLoading = <U>(_: () => U) => {
+    public onLoading = (_: () => unknown) => {
         return this;
     };
 
-    public onIdle = <U>(_: () => U) => {
+    public onIdle = (_: () => unknown) => {
         return this;
     };
 }

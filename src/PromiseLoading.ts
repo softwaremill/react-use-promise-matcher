@@ -20,20 +20,20 @@ export class PromiseLoading<T, E> implements PromiseResultShape<T, E> {
 
     public getOr = (orValue: T): T => orValue;
 
-    public onResolved = <U>(_: (value: T) => U) => {
+    public onResolved = (_: (value: T) => unknown) => {
         return this;
     };
 
-    public onRejected = <U>(_: (err: E) => U) => {
+    public onRejected = (_: (err: E) => unknown) => {
         return this;
     };
 
-    public onLoading = <U>(fn: () => U) => {
+    public onLoading = (fn: () => unknown) => {
         fn();
         return this;
     };
 
-    public onIdle = <U>(_: () => U) => {
+    public onIdle = (_: () => unknown) => {
         return this;
     };
 }
