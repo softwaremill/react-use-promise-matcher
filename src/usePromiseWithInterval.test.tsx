@@ -55,16 +55,14 @@ const TestComponent: React.FC<TestComponentWithoutArguments> = ({ loader, interv
 describe("usePromiseWithInterval with a no-arguments loader function", () => {
     let index = 0;
 
-    const loadSomePromise = jest.fn(
-        (): Promise<TestData> => {
-            return new Promise((resolve) => {
-                resolve({
-                    data: `${SAMPLE_TEXT} ${index}`,
-                });
-                index++;
+    const loadSomePromise = jest.fn((): Promise<TestData> => {
+        return new Promise((resolve) => {
+            resolve({
+                data: `${SAMPLE_TEXT} ${index}`,
             });
-        },
-    );
+            index++;
+        });
+    });
 
     beforeEach(() => {
         jest.useFakeTimers();
