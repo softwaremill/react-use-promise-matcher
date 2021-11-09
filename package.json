@@ -1,6 +1,6 @@
 {
     "name": "react-use-promise-matcher",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "React hooks library for handling promise states in a functional way",
     "homepage": "https://github.com/softwaremill/react-use-promise-matcher",
     "bugs": {
