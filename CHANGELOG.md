@@ -1,6 +1,7 @@
-## [1.4.2]
+## [1.4.0]
 
 - Chainable callback methods added: `onResolved`, `onRejected`, `onIdle`, and `onLoading`
+- Added a `usePromiseWithInterval` hook for repetitive polling
 
 ## [1.3.2]
 
