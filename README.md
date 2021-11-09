@@ -66,32 +66,57 @@ It's also worth mentioning that matching the `Idle` state is optional - the mapp
 #### Using the hook with an async function that receives arguments
 
 Sometimes it is necessary to pass some arguments to the promise loading function. You can simply pass such function as an argument to he `usePromise` hook, it's type safe as the types of the arguments will be inferred in the returned loading function. It's also possible to explicitly define them in the second type argument of the hook.
+
 ```tsx
 export const UserEchoComponent = () => {
-  const [text, setText] = React.useState("Hello!");
-  const [result, load] = usePromise<string, [string]>(
-    (param: string) => echo(param)
-  );
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setText(e.target.value);
+    const [text, setText] = React.useState("Hello!");
+    const [result, load] = usePromise<string, [string]>((param: string) => echo(param));
+    const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setText(e.target.value);
 
-  const callEcho = () => load(text);
+    const callEcho = React.useCallback(() => {
+        () => load(text);
+    }, [load]);
 
-  return (
-    <div>
-      <input value={text} onChange={onInputChange} />
-      <button type="button" onClick={callEcho}>
-        Call echo!
-      </button>
-      {result.match({
-        Idle: () => <></>,
-        Loading: () => <span>I say "{text}"!</span>,
-        Rejected: err => <span>Oops, something went wrong! Error: {err}</span>,
-        Resolved: echoResponse => <span>Echo says "{echoResponse}"</span>
-      })}
-    </div>
-  );
-}
+    return (
+        <div>
+            <input value={text} onChange={onInputChange} />
+            <button onClick={callEcho}>Call echo!</button>
+            {result.match({
+                Idle: () => <></>,
+                Loading: () => <span>I say "{text}"!</span>,
+                Rejected: (err) => <span>Oops, something went wrong! Error: {err}</span>,
+                Resolved: (echoResponse) => <span>Echo says "{echoResponse}"</span>,
+            })}
+        </div>
+    );
+};
+```
+
+#### Using promise matcher with specific interval, on-demand
+
+If you need to repeatedly poll the data (eg. by sending a request to the server), and do that on-demand, you can use `usePromiseWithInterval` hook. Pass the interval as a second argument, and receive the `result` and `start` & `stop` functions in return. `usePromiseInterval` uses `setTimeout` API for polling.
+
+```tsx
+export const UserEchoWithIntervalComponent = () => {
+    const [result, start, stop] = usePromiseWithInterval<string, [string]>((param: string) => echo(param), 2000);
+
+    const startCallingEcho = React.useCallback(() => {
+        start("It's me again!!!");
+    }, [start]);
+
+    return (
+        <div>
+            <button onClick={startCallingEcho}>Call echo!</button>
+            <button onClick={stop}>Echo stahp!</button>
+            {result.match({
+                Idle: () => <></>,
+                Loading: () => <span>I say "{text}"!</span>,
+                Rejected: (err) => <span>Oops, something went wrong! Error: {err}</span>,
+                Resolved: (echoResponse) => <span>Echo says "{echoResponse}"</span>,
+            })}
+        </div>
+    );
+};
 ```
 
 #### Error handling

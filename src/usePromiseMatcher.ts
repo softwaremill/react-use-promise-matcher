@@ -24,7 +24,7 @@ export const usePromise = <T, Args extends any[], E = string>(
                 const data: T = await loaderFn(...args);
                 safeSetResult(new PromiseResolved(data));
             } catch (err) {
-                safeSetResult(new PromiseRejected(err));
+                safeSetResult(new PromiseRejected(err) as PromiseResultShape<T, E>);
             }
         },
         [loaderFn],
