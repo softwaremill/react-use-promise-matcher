@@ -1,5 +1,20 @@
 # react-use-promise-matcher
 
+## Contents
+
+-   [Installation](#installation)
+    -   [npm](#npm)
+    -   [yarn](#yarn)
+-   [About](#about)
+-   [Features](#features)
+    -   [Hooks](#hooks)
+        -   [usePromise](#usepromise)
+            -   [basic usage](#basic-usage)
+            -   [with arguments](#with-arguments)
+            -   [error handling](#error-handling)
+        -   [Polling: usePromiseWithInterval](#polling-usepromisewithinterval)
+    -   [Callback functions](#callback-functions)
+
 ## Installation
 
 #### npm
@@ -33,9 +48,13 @@ The `usePromise` and `usePromiseWithArguments` hooks let you manage the state of
 
 The `PromiseResultShape` provides an API that lets you match each of the states and perform some actions accordingly or map them to some value, which is the main use case, as we would normally map the states to different components. Let's have a look at some examples then ...
 
-## Examples
+## Features
 
-#### Basic usage
+### Hooks
+
+#### usePromise
+
+##### Basic usage
 
 Let's assume we have a simple echo method that returns the string provided as an argument wrapped in a Promise.
 This is how we would use the `usePromise` hook to render the received text based on what the method returns:
@@ -63,14 +82,15 @@ The hook accepts a function that returns a `Promise`, as simple as that. The typ
 
 It's also worth mentioning that matching the `Idle` state is optional - the mapping for the `Loading` state will be taken for the `Idle` state if none is passed.
 
-#### Using the hook with an async function that receives arguments
+##### With arguments
 
 Sometimes it is necessary to pass some arguments to the promise loading function. You can simply pass such function as an argument to he `usePromise` hook, it's type safe as the types of the arguments will be inferred in the returned loading function. It's also possible to explicitly define them in the second type argument of the hook.
 
 ```tsx
 export const UserEchoComponent = () => {
     const [text, setText] = React.useState("Hello!");
-    const [result, load] = usePromise<string, [string]>((param: string) => echo(param));
+    const echoWithArguments = (param: string) => echo(param);
+    const [result, load] = usePromise<string, [string]>(echoWithArguments);
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setText(e.target.value);
 
     const callEcho = React.useCallback(() => {
@@ -92,60 +112,7 @@ export const UserEchoComponent = () => {
 };
 ```
 
-#### Using promise matcher with specific interval, on-demand
-
-If you need to repeatedly poll the data (eg. by sending a request to the server), and do that on-demand, you can use `usePromiseWithInterval` hook. Pass the interval as a second argument, and receive the `result` and `start` & `stop` functions in return. `usePromiseInterval` uses `setTimeout` API for polling.
-
-```tsx
-export const UserEchoWithIntervalComponent = () => {
-    const [result, start, stop] = usePromiseWithInterval<string, [string]>((param: string) => echo(param), 2000);
-
-    const startCallingEcho = React.useCallback(() => {
-        start("It's me again!!!");
-    }, [start]);
-
-    return (
-        <div>
-            <button onClick={startCallingEcho}>Call echo!</button>
-            <button onClick={stop}>Echo stahp!</button>
-            {result.match({
-                Idle: () => <></>,
-                Loading: () => <span>I say "{text}"!</span>,
-                Rejected: (err) => <span>Oops, something went wrong! Error: {err}</span>,
-                Resolved: (echoResponse) => <span>Echo says "{echoResponse}"</span>,
-            })}
-        </div>
-    );
-};
-```
-
-#### Performing side effect functions
-
-Apart from rendering phase, you may want to perform some side effect functions when your promise is in a specific state. I.e. you may want to invoke another asynchronous function when the data is resolved or when the error is being thrown.
-
-To do that, you can use callback functions dedicated to every promise state.
-
-```tsx
-const [result1, load1] = usePromise<SomeData, [], MyDomainException>(() => myServiceMethod(someArgument));
-const [result2, load2] = usePromise<SomeDataB, [Result1ResponseData], MyDomainException>(
-  anotherServiceMethod
-);
-
-result1
-  .onIdle(() => console.log('Promise is idle'))
-  .onLoading(() => console.log('Yaaay, bring the data on!'))
-  .onResolved((response) => load2(response.data))
-  .onRejected((err) => console.log(err.response.data));
-
-React.useEffect(() => {
-  // run this after the component mounts
-  load1();
-}, [load1]);
-```
-
-Every callback function is chainable - `onIdle`, `onLoading`, `onResolved` and `onRejected` return the `PromiseResultShape` instance.
-
-#### Error handling
+##### Error handling
 
 We can provide a third type parameter to the hook, which defines the type of error that is returned on rejection. By default, it is set to string. If we are using some type of domain exceptions in our services we could use the hook as following:
 
@@ -162,3 +129,53 @@ result.match({
     //...
 });
 ```
+
+#### Polling: usePromiseWithInterval
+
+If you need to repeatedly poll the data (eg. by sending a request to the server), and do that on-demand, you can use `usePromiseWithInterval` hook. Pass the interval as a second argument, and receive the `result` and `start` & `stop` functions in return. `usePromiseInterval` uses `setTimeout` API for polling.
+
+```tsx
+export const UserEchoWithIntervalComponent = () => {
+    const echoWithArguments = (param: string) => echo(param);
+    const [result, start, stop] = usePromiseWithInterval<string, [string]>(echoWithArguments, 2000);
+
+    const startCallingEcho = React.useCallback(() => {
+        start("It's me again!!!");
+    }, [start]);
+
+    return (
+        <>
+            {result.match({
+                Idle: () => <></>,
+                Loading: () => <span>I say "{text}"!</span>,
+                Rejected: (err) => <span>Oops, something went wrong! Error: {err}</span>,
+                Resolved: (echoResponse) => <span>Echo says "{echoResponse}"</span>,
+            })}
+        </>
+    );
+};
+```
+
+### Callback functions
+
+Apart from rendering phase, you may want to perform some side effect functions when your promise is in a specific state. I.e. you may want to invoke another asynchronous function when the data is resolved or when the error is being thrown.
+
+To do that, you can use callback functions dedicated to every promise state.
+
+```tsx
+const [result1, load1] = usePromise<SomeData, [], MyDomainException>(() => myServiceMethod(someArgument));
+const [result2, load2] = usePromise<SomeDataB, [Result1ResponseData], MyDomainException>(anotherServiceMethod);
+
+result1
+    .onIdle(() => console.log("Promise is idle"))
+    .onLoading(() => console.log("Yaaay, bring the data on!"))
+    .onResolved((response) => load2(response.data))
+    .onRejected((err) => console.log(err.response.data));
+
+React.useEffect(() => {
+    // run this after the component mounts
+    load1();
+}, [load1]);
+```
+
+Every callback function is chainable - `onIdle`, `onLoading`, `onResolved` and `onRejected` return the `PromiseResultShape` instance.
