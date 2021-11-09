@@ -14,6 +14,19 @@ var PromiseResolved = /** @class */ (function () {
             return _this.value;
         };
         this.getOr = function () { return _this.get(); };
+        this.onResolved = function (fn) {
+            fn(_this.get());
+            return _this;
+        };
+        this.onRejected = function (_) {
+            return _this;
+        };
+        this.onLoading = function (_) {
+            return _this;
+        };
+        this.onIdle = function (_) {
+            return _this;
+        };
     }
     return PromiseResolved;
 }());

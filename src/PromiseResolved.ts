@@ -21,6 +21,23 @@ export class PromiseResolved<T, E> implements PromiseResultShape<T, E> {
     };
 
     public getOr = (): T => this.get();
+
+    public onResolved = (fn: (value: T) => unknown) => {
+        fn(this.get());
+        return this;
+    };
+
+    public onRejected = (_: (err: E) => unknown) => {
+        return this;
+    };
+
+    public onLoading = (_: () => unknown) => {
+        return this;
+    };
+
+    public onIdle = (_: () => unknown) => {
+        return this;
+    };
 }
 
 export const isPromiseResolved = <T, E>(

@@ -59,6 +59,7 @@ function __generator(thisArg, body) {
 
 var PromiseLoading = /** @class */ (function () {
     function PromiseLoading() {
+        var _this = this;
         this.isIdle = false;
         this.isLoading = true;
         this.isResolved = false;
@@ -71,6 +72,19 @@ var PromiseLoading = /** @class */ (function () {
             throw new Error("Cannot get the value while the Promise is loading");
         };
         this.getOr = function (orValue) { return orValue; };
+        this.onResolved = function (_) {
+            return _this;
+        };
+        this.onRejected = function (_) {
+            return _this;
+        };
+        this.onLoading = function (fn) {
+            fn();
+            return _this;
+        };
+        this.onIdle = function (_) {
+            return _this;
+        };
     }
     return PromiseLoading;
 }());
@@ -91,6 +105,19 @@ var PromiseRejected = /** @class */ (function () {
             throw _this.reason;
         };
         this.getOr = function (orValue) { return orValue; };
+        this.onResolved = function (_) {
+            return _this;
+        };
+        this.onRejected = function (fn) {
+            fn(_this.reason);
+            return _this;
+        };
+        this.onLoading = function (_) {
+            return _this;
+        };
+        this.onIdle = function (_) {
+            return _this;
+        };
     }
     return PromiseRejected;
 }());
@@ -112,6 +139,19 @@ var PromiseResolved = /** @class */ (function () {
             return _this.value;
         };
         this.getOr = function () { return _this.get(); };
+        this.onResolved = function (fn) {
+            fn(_this.get());
+            return _this;
+        };
+        this.onRejected = function (_) {
+            return _this;
+        };
+        this.onLoading = function (_) {
+            return _this;
+        };
+        this.onIdle = function (_) {
+            return _this;
+        };
     }
     return PromiseResolved;
 }());
@@ -119,6 +159,7 @@ var isPromiseResolved = function (promiseResultShape) { return promiseResultShap
 
 var PromiseIdle = /** @class */ (function () {
     function PromiseIdle() {
+        var _this = this;
         this.isIdle = true;
         this.isLoading = false;
         this.isResolved = false;
@@ -131,6 +172,19 @@ var PromiseIdle = /** @class */ (function () {
             throw new Error("Cannot get the value while the Promise is idle");
         };
         this.getOr = function (orValue) { return orValue; };
+        this.onResolved = function (_) {
+            return _this;
+        };
+        this.onRejected = function (_) {
+            return _this;
+        };
+        this.onLoading = function (_) {
+            return _this;
+        };
+        this.onIdle = function (fn) {
+            fn();
+            return _this;
+        };
     }
     return PromiseIdle;
 }());

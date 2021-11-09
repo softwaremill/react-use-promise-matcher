@@ -10,4 +10,8 @@ export declare class PromiseIdle<T, E> implements PromiseResultShape<T, E> {
     mapErr: <U>() => PromiseResultShape<T, U>;
     get: () => T;
     getOr: (orValue: T) => T;
+    onResolved: <U>(_: (value: T) => U) => this;
+    onRejected: <U>(_: (err: E) => U) => this;
+    onLoading: <U>(_: () => U) => this;
+    onIdle: <U>(fn: () => U) => this;
 }

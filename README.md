@@ -119,6 +119,32 @@ export const UserEchoWithIntervalComponent = () => {
 };
 ```
 
+#### Performing side effect functions
+
+Apart from rendering phase, you may want to perform some side effect functions when your promise is in a specific state. I.e. you may want to invoke another asynchronous function when the data is resolved or when the error is being thrown.
+
+To do that, you can use callback functions dedicated to every promise state.
+
+```tsx
+const [result1, load1] = usePromise<SomeData, [], MyDomainException>(() => myServiceMethod(someArgument));
+const [result2, load2] = usePromise<SomeDataB, [Result1ResponseData], MyDomainException>(
+  anotherServiceMethod
+);
+
+result1
+  .onIdle(() => console.log('Promise is idle'))
+  .onLoading(() => console.log('Yaaay, bring the data on!'))
+  .onResolved((response) => load2(response.data))
+  .onRejected((err) => console.log(err.response.data));
+
+React.useEffect(() => {
+  // run this after the component mounts
+  load1();
+}, [load1]);
+```
+
+Every callback function is chainable - `onIdle`, `onLoading`, `onResolved` and `onRejected` return the `PromiseResultShape` instance.
+
 #### Error handling
 
 We can provide a third type parameter to the hook, which defines the type of error that is returned on rejection. By default, it is set to string. If we are using some type of domain exceptions in our services we could use the hook as following:

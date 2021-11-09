@@ -59,4 +59,29 @@ describe("PromiseIdle", () => {
         expect(original).toBeInstanceOf(PromiseIdle);
         expect(mapped).toBeInstanceOf(PromiseIdle);
     });
+
+    it("calling onResolved on PromiseIdle should not invoke the callback", () => {
+        const callback = jest.fn();
+        const promiseIdle = new PromiseIdle();
+        promiseIdle.onResolved(callback);
+        expect(callback).not.toHaveBeenCalled();
+    });
+
+    it("calling onLoading on PromiseResolved should not invoke provided callback", () => {
+        const callback = jest.fn();
+        new PromiseIdle().onLoading(callback);
+        expect(callback).not.toHaveBeenCalled();
+    });
+
+    it("calling onRejected on PromiseIdle should not invoke provided callback", () => {
+        const callback = jest.fn();
+        new PromiseIdle().onRejected(callback);
+        expect(callback).not.toHaveBeenCalled();
+    });
+
+    it("calling onIdle on PromiseIdle should invoke provided callback", () => {
+        const callback = jest.fn();
+        new PromiseIdle().onIdle(callback);
+        expect(callback).toHaveBeenCalledTimes(1);
+    });
 });

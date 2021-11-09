@@ -14,6 +14,19 @@ var PromiseRejected = /** @class */ (function () {
             throw _this.reason;
         };
         this.getOr = function (orValue) { return orValue; };
+        this.onResolved = function (_) {
+            return _this;
+        };
+        this.onRejected = function (fn) {
+            fn(_this.reason);
+            return _this;
+        };
+        this.onLoading = function (_) {
+            return _this;
+        };
+        this.onIdle = function (_) {
+            return _this;
+        };
     }
     return PromiseRejected;
 }());
