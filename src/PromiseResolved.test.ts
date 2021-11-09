@@ -99,7 +99,7 @@ describe("PromiseResolved", () => {
             RESOLVED_OBJECT,
         );
         const mapped: PromiseResultShape<string, Error> = original.flatMap<string>(
-            (_) => new PromiseRejected(new Error("some error")),
+            () => new PromiseRejected(new Error("some error")),
         );
         expect(original).toBeInstanceOf(PromiseResolved);
         expect(mapped).toBeInstanceOf(PromiseRejected);
@@ -110,7 +110,7 @@ describe("PromiseResolved", () => {
         const original: PromiseResultShape<TestInterface, Error> = new PromiseResolved<TestInterface, Error>(
             RESOLVED_OBJECT,
         );
-        const mapped: PromiseResultShape<string, Error> = original.flatMap<string>((_) => new PromiseLoading());
+        const mapped: PromiseResultShape<string, Error> = original.flatMap<string>(() => new PromiseLoading());
         expect(original).toBeInstanceOf(PromiseResolved);
         expect(mapped).toBeInstanceOf(PromiseLoading);
     });
@@ -119,7 +119,7 @@ describe("PromiseResolved", () => {
         const original: PromiseResultShape<TestInterface, Error> = new PromiseResolved<TestInterface, Error>(
             RESOLVED_OBJECT,
         );
-        const mapped: PromiseResultShape<string, Error> = original.flatMap<string>((_) => new PromiseIdle());
+        const mapped: PromiseResultShape<string, Error> = original.flatMap<string>(() => new PromiseIdle());
         expect(original).toBeInstanceOf(PromiseResolved);
         expect(mapped).toBeInstanceOf(PromiseIdle);
     });

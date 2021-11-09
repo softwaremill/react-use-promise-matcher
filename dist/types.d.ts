@@ -21,4 +21,14 @@ export interface PromiseResultShape<T, E> {
     isRejected: boolean;
 }
 export declare type PromiseLoader<T, Args extends any[]> = (...args: Args) => Promise<T>;
-export declare type UsePromise<T, Args extends any[], E = string> = [PromiseResultShape<T, E>, PromiseLoader<void, Args>, () => void];
+export declare type UsePromise<T, Args extends any[], E = string> = [
+    result: PromiseResultShape<T, E>,
+    load: PromiseLoader<void, Args>,
+    reset: () => void
+];
+export declare type UsePromiseWithInterval<T, E, A extends any[]> = [
+    result: PromiseResultShape<T, E>,
+    start: (...args: A) => void,
+    stop: () => void,
+    reset: () => void
+];

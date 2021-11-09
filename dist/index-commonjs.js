@@ -233,6 +233,40 @@ var usePromise = function (loaderFn) {
     return [result, load, clear];
 };
 
+var usePromiseWithInterval = function (loaderFn, interval) {
+    var _a = usePromise(loaderFn), result = _a[0], load = _a[1], reset = _a[2];
+    var timer = React.useRef(undefined);
+    var start = React.useCallback(function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        timer.current = setTimeout(function tick() {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, load.apply(void 0, args)];
+                        case 1:
+                            _a.sent();
+                            timer.current = setTimeout(tick, interval);
+                            return [2 /*return*/];
+                    }
+                });
+            });
+        }, interval);
+    }, [load, interval, timer]);
+    var stop = React.useCallback(function () {
+        clearTimeout(timer.current);
+    }, [timer]);
+    React.useEffect(function () {
+        return function () {
+            clearTimeout(timer.current);
+            timer.current = undefined;
+        };
+    }, [timer]);
+    return [result, start, stop, reset];
+};
+
 exports.PromiseIdle = PromiseIdle;
 exports.PromiseLoading = PromiseLoading;
 exports.PromiseRejected = PromiseRejected;
@@ -240,4 +274,5 @@ exports.PromiseResolved = PromiseResolved;
 exports.isPromiseRejected = isPromiseRejected;
 exports.isPromiseResolved = isPromiseResolved;
 exports.usePromise = usePromise;
+exports.usePromiseWithInterval = usePromiseWithInterval;
 //# sourceMappingURL=index-commonjs.js.map
