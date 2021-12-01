@@ -156,6 +156,33 @@ export const UserEchoWithIntervalComponent = () => {
 };
 ```
 
+Besides that, you can also perform calls manually, and check the current amount of times your request was performed.
+`load` function is a promise loader function from the `usePromise` hook.
+
+```tsx
+export const IntervalAndManualCheckComponent = () => {
+    const echoWithArguments = (param: string) => echo(param);
+    const [result, start, stop, load,, retries] = usePromiseWithInterval<string, [string]>(echoWithArguments, 2000);
+
+    const startCallingEcho = React.useCallback(() => {
+        start("It's me again!!!");
+    }, [start]);
+
+    return (
+        <>
+            {result.match({
+                Idle: () => <></>,
+                Loading: () => <span>I say "{text}"!</span>,
+                Rejected: (err) => <span>Oops, something went wrong! Error: {err}</span>,
+                Resolved: (echoResponse) => <span>Echo says "{echoResponse}"</span>,
+            })}
+        </>
+        <button onClick={stop}>Stop</button>
+        <button disabled={retries < 3} onClick={load}>Retry manually</button>
+    );
+};
+```
+
 ### Callback functions
 
 Apart from rendering phase, you may want to perform some side effect functions when your promise is in a specific state. I.e. you may want to invoke another asynchronous function when the data is resolved or when the error is being thrown.

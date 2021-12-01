@@ -1,4 +1,4 @@
-import { MutableRefObject, useCallback, useEffect, useRef } from "react";
+import { MutableRefObject, useCallback, useEffect, useRef, useState } from "react";
 import { PromiseLoader, UsePromiseWithInterval } from "./types";
 import { usePromise } from "./usePromiseMatcher";
 
@@ -7,6 +7,11 @@ export const usePromiseWithInterval = <T, Args extends any[], E = string>(
     interval: number,
 ): UsePromiseWithInterval<T, E, Args> => {
     const [result, load, reset] = usePromise<T, Args, E>(loaderFn);
+    const [retries, setRetries] = useState<number>(0);
+
+    const increment = useCallback(() => {
+        setRetries((v) => v + 1);
+    }, [setRetries]);
 
     const timer: MutableRefObject<ReturnType<typeof setTimeout> | undefined> = useRef(undefined);
 
@@ -20,6 +25,12 @@ export const usePromiseWithInterval = <T, Args extends any[], E = string>(
         [load, interval, timer],
     );
 
+    useEffect(() => {
+        if (result.isLoading) {
+            increment();
+        }
+    }, [result, increment]);
+
     const stop = useCallback(() => {
         clearTimeout(timer.current as NodeJS.Timer);
     }, [timer]);
@@ -31,5 +42,5 @@ export const usePromiseWithInterval = <T, Args extends any[], E = string>(
         };
     }, [timer]);
 
-    return [result, start, stop, reset];
+    return [result, start, stop, load, reset, retries];
 };
