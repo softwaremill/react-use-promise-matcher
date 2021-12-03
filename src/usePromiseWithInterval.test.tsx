@@ -34,7 +34,7 @@ const nextExpectedResult = async (result: string, unexpectedResult?: string) => 
 };
 
 const TestComponent: React.FC<TestComponentWithoutArguments> = ({ loader, interval }) => {
-    const [result, start, stop, load, , retries] = usePromiseWithInterval(loader, interval);
+    const [result, start, stop, load, , tryCount] = usePromiseWithInterval(loader, interval);
 
     return (
         <>
@@ -53,7 +53,7 @@ const TestComponent: React.FC<TestComponentWithoutArguments> = ({ loader, interv
             <button data-testid={retryButtonId} onClick={load}>
                 Retry
             </button>
-            <p data-testid={retriesParagraphId}>{retries}</p>
+            <p data-testid={retriesParagraphId}>{tryCount}</p>
         </>
     );
 };

@@ -7,11 +7,11 @@ export const usePromiseWithInterval = <T, Args extends any[], E = string>(
     interval: number,
 ): UsePromiseWithInterval<T, E, Args> => {
     const [result, load, reset] = usePromise<T, Args, E>(loaderFn);
-    const [retries, setRetries] = useState<number>(0);
+    const [tryCount, setTryCount] = useState<number>(0);
 
     const increment = useCallback(() => {
-        setRetries((v) => v + 1);
-    }, [setRetries]);
+        setTryCount((v) => v + 1);
+    }, [setTryCount]);
 
     const timer: MutableRefObject<ReturnType<typeof setTimeout> | undefined> = useRef(undefined);
 
@@ -42,5 +42,5 @@ export const usePromiseWithInterval = <T, Args extends any[], E = string>(
         };
     }, [timer]);
 
-    return [result, start, stop, load, reset, retries];
+    return [result, start, stop, load, reset, tryCount];
 };

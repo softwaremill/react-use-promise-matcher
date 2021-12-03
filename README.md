@@ -157,12 +157,18 @@ export const UserEchoWithIntervalComponent = () => {
 ```
 
 Besides that, you can also perform calls manually, and check the current amount of times your request was performed.
-`load` function is a promise loader function from the `usePromise` hook.
 
 ```tsx
 export const IntervalAndManualCheckComponent = () => {
     const echoWithArguments = (param: string) => echo(param);
-    const [result, start, stop, load,, retries] = usePromiseWithInterval<string, [string]>(echoWithArguments, 2000);
+    const [
+        result, // good old PromiseResultShape
+        start,
+        stop,
+        load, // manual load trigger
+        reset, // promise shape reset function
+        tryCount // amount of times your request was performed
+    ] = usePromiseWithInterval<string, [string]>(echoWithArguments, 2000);
 
     const startCallingEcho = React.useCallback(() => {
         start("It's me again!!!");
