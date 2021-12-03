@@ -34,5 +34,5 @@ export type UsePromiseWithInterval<T, E, A extends any[]> = [
     stop: () => void,
     load: PromiseLoader<void, A>,
     reset: () => void,
-    retries: number,
+    tryCount: number,
 ];
