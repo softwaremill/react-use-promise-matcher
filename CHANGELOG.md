@@ -1,3 +1,7 @@
+## [1.4.2]
+
+- Added manual retry option and tryCount to usePromiseWithInterval
+
 ## [1.4.1]
 
 - README.md update: contents list, more concise feature description
