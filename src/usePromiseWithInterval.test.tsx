@@ -19,6 +19,8 @@ const SAMPLE_TEXT = "Some asynchronously loaded text";
 
 const startButtonId = "startButton";
 const stopButtonId = "stopButton";
+const retriesParagraphId = "retries";
+const retryButtonId = "retry";
 
 const nextExpectedResult = async (result: string, unexpectedResult?: string) => {
     act(() => {
@@ -32,7 +34,7 @@ const nextExpectedResult = async (result: string, unexpectedResult?: string) => 
 };
 
 const TestComponent: React.FC<TestComponentWithoutArguments> = ({ loader, interval }) => {
-    const [result, start, stop] = usePromiseWithInterval(loader, interval);
+    const [result, start, stop, load, , tryCount] = usePromiseWithInterval(loader, interval);
 
     return (
         <>
@@ -48,6 +50,10 @@ const TestComponent: React.FC<TestComponentWithoutArguments> = ({ loader, interv
             <button data-testid={stopButtonId} onClick={stop}>
                 Clear
             </button>
+            <button data-testid={retryButtonId} onClick={load}>
+                Retry
+            </button>
+            <p data-testid={retriesParagraphId}>{tryCount}</p>
         </>
     );
 };
@@ -78,6 +84,7 @@ describe("usePromiseWithInterval with a no-arguments loader function", () => {
 
         const startButton = screen.getByTestId(startButtonId);
         const stopButton = screen.getByTestId(stopButtonId);
+        const retryButton = screen.getByTestId(retryButtonId);
 
         fireEvent.click(startButton);
 
@@ -88,5 +95,13 @@ describe("usePromiseWithInterval with a no-arguments loader function", () => {
 
         fireEvent.click(stopButton);
         await nextExpectedResult(`${SAMPLE_TEXT} 3`);
+        let retriesParagraph = await screen.findByTestId(retriesParagraphId);
+
+        expect(retriesParagraph.textContent).toBe("4");
+
+        fireEvent.click(retryButton);
+
+        retriesParagraph = await screen.findByTestId(retriesParagraphId);
+        expect(retriesParagraph.textContent).toBe("5");
     });
 });

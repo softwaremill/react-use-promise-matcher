@@ -32,5 +32,7 @@ export type UsePromiseWithInterval<T, E, A extends any[]> = [
     result: PromiseResultShape<T, E>,
     start: (...args: A) => void,
     stop: () => void,
+    load: PromiseLoader<void, A>,
     reset: () => void,
+    tryCount: number,
 ];
