@@ -6,7 +6,7 @@ export const usePromiseWithInterval = <T, Args extends any[], E = string>(
     loaderFn: PromiseLoader<T, Args>,
     interval: number,
 ): UsePromiseWithInterval<T, E, Args> => {
-    const [result, load, reset] = usePromise<T, Args, E>(loaderFn);
+    const [result, load, resetPromise] = usePromise<T, Args, E>(loaderFn);
     const [tryCount, setTryCount] = useState<number>(0);
 
     const increment = useCallback(() => {
@@ -24,6 +24,12 @@ export const usePromiseWithInterval = <T, Args extends any[], E = string>(
         },
         [load, interval, timer],
     );
+
+    const reset = useCallback(() => {
+        reset();
+        clearInterval(timer.current as NodeJS.Timer);
+        setTryCount(0);
+    }, [resetPromise, timer, setTryCount]);
 
     useEffect(() => {
         if (result.isLoading) {
