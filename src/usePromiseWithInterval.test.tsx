@@ -33,8 +33,25 @@ const nextExpectedResult = async (result: string, unexpectedResult?: string) => 
     expect(await screen.findByText(result)).toBeInTheDocument();
 };
 
+let index = 0;
+
+const loadSomePromise = jest.fn((): Promise<TestData> => {
+    return new Promise((resolve) => {
+        resolve({
+            data: `${SAMPLE_TEXT} ${index}`,
+        });
+        index++;
+    });
+});
+
 const TestComponent: React.FC<TestComponentWithoutArguments> = ({ loader, interval }) => {
-    const [result, start, stop, load, , tryCount] = usePromiseWithInterval(loader, interval);
+    const [result, start, stop, , , tryCount, resetTryCount] = usePromiseWithInterval(loader, interval);
+
+    const onRetry = React.useCallback(() => {
+        index = 0;
+        resetTryCount();
+        start();
+    }, [resetTryCount, start]);
 
     return (
         <>
@@ -50,7 +67,7 @@ const TestComponent: React.FC<TestComponentWithoutArguments> = ({ loader, interv
             <button data-testid={stopButtonId} onClick={stop}>
                 Clear
             </button>
-            <button data-testid={retryButtonId} onClick={load}>
+            <button data-testid={retryButtonId} onClick={onRetry}>
                 Retry
             </button>
             <p data-testid={retriesParagraphId}>{tryCount}</p>
@@ -59,24 +76,12 @@ const TestComponent: React.FC<TestComponentWithoutArguments> = ({ loader, interv
 };
 
 describe("usePromiseWithInterval with a no-arguments loader function", () => {
-    let index = 0;
-
-    const loadSomePromise = jest.fn((): Promise<TestData> => {
-        return new Promise((resolve) => {
-            resolve({
-                data: `${SAMPLE_TEXT} ${index}`,
-            });
-            index++;
-        });
-    });
-
     beforeEach(() => {
         jest.useFakeTimers();
     });
 
     afterEach(() => {
         loadSomePromise.mockClear();
-        index = 0;
     });
 
     it("Should start and stop the loader execution with specified interval", async () => {
@@ -94,14 +99,13 @@ describe("usePromiseWithInterval with a no-arguments loader function", () => {
         await nextExpectedResult(`${SAMPLE_TEXT} 3`, `${SAMPLE_TEXT} 2`);
 
         fireEvent.click(stopButton);
-        await nextExpectedResult(`${SAMPLE_TEXT} 3`);
+        expect(await screen.findByText(`${SAMPLE_TEXT} 3`)).toBeInTheDocument();
         let retriesParagraph = await screen.findByTestId(retriesParagraphId);
 
         expect(retriesParagraph.textContent).toBe("4");
 
         fireEvent.click(retryButton);
-
         retriesParagraph = await screen.findByTestId(retriesParagraphId);
-        expect(retriesParagraph.textContent).toBe("5");
+        expect(retriesParagraph.textContent).toBe("0");
     });
 });

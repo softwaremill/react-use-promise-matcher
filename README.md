@@ -167,7 +167,8 @@ export const IntervalAndManualCheckComponent = () => {
         stop,
         load, // manual load trigger
         reset, // promise shape reset function
-        tryCount // amount of times your request was performed
+        tryCount // amount of times your request was performed,
+        resetTryCount // reset amount of times your request was performed
     ] = usePromiseWithInterval<string, [string]>(echoWithArguments, 2000);
 
     const startCallingEcho = React.useCallback(() => {
