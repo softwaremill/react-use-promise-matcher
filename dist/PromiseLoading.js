@@ -1,32 +1,29 @@
-var PromiseLoading = /** @class */ (function () {
-    function PromiseLoading() {
-        var _this = this;
+export class PromiseLoading {
+    constructor() {
         this.isIdle = false;
         this.isLoading = true;
         this.isResolved = false;
         this.isRejected = false;
-        this.match = function (matcher) { return matcher.Loading(); };
-        this.map = function () { return new PromiseLoading(); };
-        this.flatMap = function () { return new PromiseLoading(); };
-        this.mapErr = function () { return new PromiseLoading(); };
-        this.get = function () {
+        this.match = (matcher) => matcher.Loading();
+        this.map = () => new PromiseLoading();
+        this.flatMap = () => new PromiseLoading();
+        this.mapErr = () => new PromiseLoading();
+        this.get = () => {
             throw new Error("Cannot get the value while the Promise is loading");
         };
-        this.getOr = function (orValue) { return orValue; };
-        this.onResolved = function (_) {
-            return _this;
+        this.getOr = (orValue) => orValue;
+        this.onResolved = (_) => {
+            return this;
         };
-        this.onRejected = function (_) {
-            return _this;
+        this.onRejected = (_) => {
+            return this;
         };
-        this.onLoading = function (fn) {
+        this.onLoading = (fn) => {
             fn();
-            return _this;
+            return this;
         };
-        this.onIdle = function (_) {
-            return _this;
+        this.onIdle = (_) => {
+            return this;
         };
     }
-    return PromiseLoading;
-}());
-export { PromiseLoading };
+}

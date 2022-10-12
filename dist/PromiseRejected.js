@@ -1,34 +1,31 @@
-var PromiseRejected = /** @class */ (function () {
-    function PromiseRejected(reason) {
-        var _this = this;
+export class PromiseRejected {
+    constructor(reason) {
         this.reason = reason;
         this.isIdle = false;
         this.isLoading = false;
         this.isResolved = false;
         this.isRejected = true;
-        this.match = function (matcher) { return matcher.Rejected(_this.reason); };
-        this.map = function () { return new PromiseRejected(_this.reason); };
-        this.flatMap = function () { return new PromiseRejected(_this.reason); };
-        this.mapErr = function (fn) { return new PromiseRejected(fn(_this.reason)); };
-        this.get = function () {
-            throw _this.reason;
+        this.match = (matcher) => matcher.Rejected(this.reason);
+        this.map = () => new PromiseRejected(this.reason);
+        this.flatMap = () => new PromiseRejected(this.reason);
+        this.mapErr = (fn) => new PromiseRejected(fn(this.reason));
+        this.get = () => {
+            throw this.reason;
         };
-        this.getOr = function (orValue) { return orValue; };
-        this.onResolved = function (_) {
-            return _this;
+        this.getOr = (orValue) => orValue;
+        this.onResolved = (_) => {
+            return this;
         };
-        this.onRejected = function (fn) {
-            fn(_this.reason);
-            return _this;
+        this.onRejected = (fn) => {
+            fn(this.reason);
+            return this;
         };
-        this.onLoading = function (_) {
-            return _this;
+        this.onLoading = (_) => {
+            return this;
         };
-        this.onIdle = function (_) {
-            return _this;
+        this.onIdle = (_) => {
+            return this;
         };
     }
-    return PromiseRejected;
-}());
-export { PromiseRejected };
-export var isPromiseRejected = function (promiseResultShape) { return promiseResultShape.isRejected; };
+}
+export const isPromiseRejected = (promiseResultShape) => promiseResultShape.isRejected;

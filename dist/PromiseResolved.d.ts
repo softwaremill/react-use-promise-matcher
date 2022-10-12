@@ -12,9 +12,9 @@ export declare class PromiseResolved<T, E> implements PromiseResultShape<T, E> {
     mapErr: <U>() => PromiseResultShape<T, U>;
     get: () => T;
     getOr: () => T;
-    onResolved: <U>(fn: (value: T) => U) => this;
-    onRejected: <U>(_: (err: E) => U) => this;
-    onLoading: <U>(_: () => U) => this;
-    onIdle: <U>(_: () => U) => this;
+    onResolved: (fn: (value: T) => unknown) => this;
+    onRejected: (_: (err: E) => unknown) => this;
+    onLoading: (_: () => unknown) => this;
+    onIdle: (_: () => unknown) => this;
 }
 export declare const isPromiseResolved: <T, E>(promiseResultShape: PromiseResultShape<T, E>) => promiseResultShape is PromiseResolved<T, E>;
