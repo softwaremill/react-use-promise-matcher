@@ -8,8 +8,8 @@
         "email": "frontend-dev@softwaremill.com"
     },
     "type": "module",
-    "main": "dist/index-commonjs.js",
-    "module": "dist/index.js",
+    "main": "dist/index-commonjs.cjs",
+    "module": "dist/index.mjs",
     "types": "dist/index.d.ts",
     "scripts": {
         "clean": "rimraf dist",

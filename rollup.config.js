@@ -11,6 +11,7 @@ export default {
             globals: {
                 react: "React",
             },
+            entryFileNames: "[name].mjs",
         },
         {
             file: pkg.main,
@@ -19,9 +20,10 @@ export default {
             globals: {
                 react: "React",
             },
+            entryFileNames: "[name].cjs",
         },
     ],
-    // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
+    // Indicate here external modules you don't want to include in your bundle (i.e.: 'lodash')
     external: ["react"],
 
     plugins: [typescript({ useTsconfigDeclarationDir: true })],
