@@ -1,6 +1,7 @@
-## [unreleased]
+## [1.5.0]
 
 - [Fix - [Issue #32](https://github.com/softwaremill/react-use-promise-matcher/issues/32)] Updated to React v18 and fixed related state management issues.
+- Fixed issues with Webpack 5
 
 ## [1.4.2]
 
