@@ -1,3 +1,7 @@
+## [unreleased]
+
+- [Fix - [Issue #32](https://github.com/softwaremill/react-use-promise-matcher/issues/32)] Updated to React v18 and fixed related state management issues.
+
 ## [1.4.2]
 
 - Added manual retry option and tryCount to usePromiseWithInterval

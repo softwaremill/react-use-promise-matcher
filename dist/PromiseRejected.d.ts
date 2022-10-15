@@ -12,9 +12,9 @@ export declare class PromiseRejected<T, E> implements PromiseResultShape<T, E> {
     mapErr: <U>(fn: (err: E) => U) => PromiseResultShape<T, U>;
     get: () => T;
     getOr: (orValue: T) => T;
-    onResolved: <U>(_: (value: T) => U) => this;
-    onRejected: <U>(fn: (err: E) => U) => this;
-    onLoading: <U>(_: () => U) => this;
-    onIdle: <U>(_: () => U) => this;
+    onResolved: (_: (value: T) => unknown) => this;
+    onRejected: (fn: (err: E) => unknown) => this;
+    onLoading: (_: () => unknown) => this;
+    onIdle: (_: () => unknown) => this;
 }
 export declare const isPromiseRejected: <T, E>(promiseResultShape: PromiseResultShape<T, E>) => promiseResultShape is PromiseRejected<T, E>;

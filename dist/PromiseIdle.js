@@ -1,32 +1,29 @@
-var PromiseIdle = /** @class */ (function () {
-    function PromiseIdle() {
-        var _this = this;
+export class PromiseIdle {
+    constructor() {
         this.isIdle = true;
         this.isLoading = false;
         this.isResolved = false;
         this.isRejected = false;
-        this.match = function (matcher) { return (matcher.Idle ? matcher.Idle() : matcher.Loading()); };
-        this.map = function () { return new PromiseIdle(); };
-        this.flatMap = function () { return new PromiseIdle(); };
-        this.mapErr = function () { return new PromiseIdle(); };
-        this.get = function () {
+        this.match = (matcher) => (matcher.Idle ? matcher.Idle() : matcher.Loading());
+        this.map = () => new PromiseIdle();
+        this.flatMap = () => new PromiseIdle();
+        this.mapErr = () => new PromiseIdle();
+        this.get = () => {
             throw new Error("Cannot get the value while the Promise is idle");
         };
-        this.getOr = function (orValue) { return orValue; };
-        this.onResolved = function (_) {
-            return _this;
+        this.getOr = (orValue) => orValue;
+        this.onResolved = (_) => {
+            return this;
         };
-        this.onRejected = function (_) {
-            return _this;
+        this.onRejected = (_) => {
+            return this;
         };
-        this.onLoading = function (_) {
-            return _this;
+        this.onLoading = (_) => {
+            return this;
         };
-        this.onIdle = function (fn) {
+        this.onIdle = (fn) => {
             fn();
-            return _this;
+            return this;
         };
     }
-    return PromiseIdle;
-}());
-export { PromiseIdle };
+}

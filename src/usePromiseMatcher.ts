@@ -4,40 +4,27 @@ import { PromiseRejected } from "./PromiseRejected";
 import { PromiseResolved } from "./PromiseResolved";
 import { PromiseResultShape, PromiseLoader, UsePromise } from "./types";
 import { PromiseIdle } from "./PromiseIdle";
+import { flushSync } from "react-dom";
 
 export const usePromise = <T, Args extends any[], E = string>(
     loaderFn: PromiseLoader<T, Args>,
 ): UsePromise<T, Args, E> => {
     const [result, setResult] = React.useState<PromiseResultShape<T, E>>(new PromiseIdle<T, E>());
-    const unmounted = React.useRef(false);
-    const safeSetResult = React.useCallback((res: PromiseResultShape<T, E>) => {
-        if (unmounted.current) {
-            return;
-        }
-        setResult(res);
-    }, []);
 
     const load = React.useCallback(
         async (...args: Args): Promise<void> => {
-            safeSetResult(new PromiseLoading<T, E>());
+            setResult(new PromiseLoading<T, E>());
             try {
                 const data: T = await loaderFn(...args);
-                safeSetResult(new PromiseResolved(data));
+                flushSync(() => setResult(new PromiseResolved(data)));
             } catch (err) {
-                safeSetResult(new PromiseRejected<T, E>(err as E));
+                flushSync(() => setResult(new PromiseRejected<T, E>(err as E)));
             }
         },
         [loaderFn],
     );
 
-    const clear = () => safeSetResult(new PromiseIdle<T, E>());
-
-    React.useEffect(
-        () => () => {
-            unmounted.current = true;
-        },
-        [],
-    );
+    const clear = () => setResult(new PromiseIdle<T, E>());
 
     return [result, load, clear];
 };
